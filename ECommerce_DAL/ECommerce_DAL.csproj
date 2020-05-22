@@ -8,4 +8,10 @@
     <ProjectReference Include="..\ECommerce_Core\ECommerce_Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstarct\" />
+    <Folder Include="Concrete\" />
+    <Folder Include="POCO\" />
+  </ItemGroup>
+
 </Project>

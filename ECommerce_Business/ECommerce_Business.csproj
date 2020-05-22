@@ -8,4 +8,9 @@
     <ProjectReference Include="..\ECommerce_DAL\ECommerce_DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstarct\" />
+    <Folder Include="Concrete\" />
+  </ItemGroup>
+
 </Project>
