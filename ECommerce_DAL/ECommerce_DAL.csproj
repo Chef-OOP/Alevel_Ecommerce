@@ -1,17 +1,21 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ECommerce_Core\ECommerce_Core.csproj" />
+    <Compile Remove="POCO\**" />
+    <EmbeddedResource Remove="POCO\**" />
+    <None Remove="POCO\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ECommerce_Entity\ECommerce_Entity.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Abstarct\" />
-    <Folder Include="POCO\" />
   </ItemGroup>
 
   <ItemGroup>
