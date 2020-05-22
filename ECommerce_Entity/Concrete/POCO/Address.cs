@@ -11,6 +11,7 @@ namespace ECommerce_Entity.Concrete.POCO
         public string District { get; set; }
         public string Detail { get; set; }
         public string PostalCode { get; set; }
-        public List<ApplicationUser> Users { get; set; }
+        public int UserId { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

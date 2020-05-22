@@ -13,5 +13,10 @@ namespace ECommerce_Entity.Concrete.Constants
     {
         Male,Female,Other
     }
+
+    public enum OrderStatus
+    {
+        Waiting,OnTheWay,Completed
+    }
     
 }
