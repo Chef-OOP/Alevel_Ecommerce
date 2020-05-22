@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ECommerce_Entity.Concrete
+namespace ECommerce_Entity.Concrete.POCO
 {
-    public class MasterCategory
+    public class Order : BaseEntity
     {
+        
     }
 }
