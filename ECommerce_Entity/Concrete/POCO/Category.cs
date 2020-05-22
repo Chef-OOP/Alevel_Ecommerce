@@ -12,5 +12,6 @@ namespace ECommerce_Entity.Concrete.POCO
         public int MasterCategoryId { get; set; }
         public MasterCategory MasterCategory { get; set; }
         public List<Product> Products { get; set; }
+        public List<ProductPropertyGroup> PropertyGroups { get; set; }
     }
 }
