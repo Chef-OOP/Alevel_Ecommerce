@@ -25,15 +25,26 @@ namespace ECommerce_DAL.Concrete
         {
             Context = context;
         }
+        /// <summary>
+        /// Entity Ekler
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public int Add(TEntity entity)
         {
             Context.Add(entity);
             return Context.SaveChanges();
         }
+
         public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
         {
             return await Context.Set<TEntity>().SingleOrDefaultAsync(filter);
         }
+        /// <summary>
+        /// Tüm Sorgu methodları bu method üzerinde gidecek
+        /// </summary>
+        /// <param name="filter"></param>
+        /// <returns></returns>
         public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null)
         {
             if (filter == null)
@@ -41,16 +52,40 @@ namespace ECommerce_DAL.Concrete
             else
                 return await Context.Set<TEntity>().Where(filter).ToListAsync();
         }
+        /// <summary>
+        /// Database desilimsi gereken dosyaları siler
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public int Delete(TEntity entity)
+        {
+            Context.Entry(entity).State = EntityState.Deleted;
+            return Context.SaveChanges();
+        }
+        /// <summary>
+        /// Databasede silinmemesi gereken ancak kullanıcının silemeye çalıştığı dosyalar
+        /// NOT : Entity class larının içinden gelecek olan bool IsDeleted true işaretleyecek 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public int UpDelete(TEntity entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
             return Context.SaveChanges();
         }
+        /// <summary>
+        /// Güncellme Yapar
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public int Update(TEntity entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
             return Context.SaveChanges();
         }
+
+
+        #region GC iş bırakmayan Yerdir  Bura
         public virtual void Dispose()
         {
             Dispose(true);
@@ -69,5 +104,7 @@ namespace ECommerce_DAL.Concrete
             }
         }
         private bool Disposed { get; set; }
+
+        #endregion
     }
 }
