@@ -9,19 +9,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{8B96
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{C6A92849-FE6F-4064-B19B-4C12392BB05C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce_Web", "ECommerce_Web\ECommerce_Web.csproj", "{FDCFFD2C-8DC8-4DC3-B979-AFE7B9DA825E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce_Web", "ECommerce_Web\ECommerce_Web.csproj", "{FDCFFD2C-8DC8-4DC3-B979-AFE7B9DA825E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce_Api", "ECommerce_Api\ECommerce_Api.csproj", "{E7E7FFAC-B33A-4946-98CD-E82525954A54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce_Api", "ECommerce_Api\ECommerce_Api.csproj", "{E7E7FFAC-B33A-4946-98CD-E82525954A54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce_DAL", "ECommerce_DAL\ECommerce_DAL.csproj", "{46326F32-D460-496A-994D-15E80A9A688B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce_DAL", "ECommerce_DAL\ECommerce_DAL.csproj", "{46326F32-D460-496A-994D-15E80A9A688B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce_Business", "ECommerce_Business\ECommerce_Business.csproj", "{6B36BA59-CCAE-44CC-A9E3-914E053B2A1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce_Business", "ECommerce_Business\ECommerce_Business.csproj", "{6B36BA59-CCAE-44CC-A9E3-914E053B2A1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce_Core", "ECommerce_Core\ECommerce_Core.csproj", "{34E73C55-D7C2-46BC-A1CB-1E8DB4CB644D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce_Core", "ECommerce_Core\ECommerce_Core.csproj", "{34E73C55-D7C2-46BC-A1CB-1E8DB4CB644D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Iyzico", "Iyzico", "{0484F00D-A537-4EF1-932E-3DE17358C10D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce_Payment_iyzico", "ECommerce_Payment_iyzico\ECommerce_Payment_iyzico.csproj", "{3A464AA9-E996-48B9-BEB7-0ECFCA7C4F8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECommerce_Payment_iyzico", "ECommerce_Payment_iyzico\ECommerce_Payment_iyzico.csproj", "{3A464AA9-E996-48B9-BEB7-0ECFCA7C4F8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECommerce_Entity", "ECommerce_Entity\ECommerce_Entity.csproj", "{EA25111B-D134-4C55-8925-D9E67A6F3019}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{3A464AA9-E996-48B9-BEB7-0ECFCA7C4F8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A464AA9-E996-48B9-BEB7-0ECFCA7C4F8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A464AA9-E996-48B9-BEB7-0ECFCA7C4F8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA25111B-D134-4C55-8925-D9E67A6F3019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA25111B-D134-4C55-8925-D9E67A6F3019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA25111B-D134-4C55-8925-D9E67A6F3019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA25111B-D134-4C55-8925-D9E67A6F3019}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{34E73C55-D7C2-46BC-A1CB-1E8DB4CB644D} = {8B969F43-C38A-4929-A045-52A5476927A6}
 		{0484F00D-A537-4EF1-932E-3DE17358C10D} = {C6A92849-FE6F-4064-B19B-4C12392BB05C}
 		{3A464AA9-E996-48B9-BEB7-0ECFCA7C4F8C} = {0484F00D-A537-4EF1-932E-3DE17358C10D}
+		{EA25111B-D134-4C55-8925-D9E67A6F3019} = {8B969F43-C38A-4929-A045-52A5476927A6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF036A04-6D70-4CF5-87F0-B4FD3CB393CE}
