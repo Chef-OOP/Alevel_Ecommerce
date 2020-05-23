@@ -22,61 +22,73 @@ namespace ECommerce_DAL.Concrete
         }
 
 
-        //public List<Product> GetListByListBrand(int[] BrandId, int[] Properties)
-        //{
-        //    List<Product> listProduct = null;
+        public List<Product> GetListByListBrand(Brand[] brand, ProductProperty[] productProperty)
+        {
 
-        //    if (BrandId.Length > 0)
-        //    {
-        //        var result = "select * from Product where ";
-        //        for (int i = 0; i < BrandId.Length; i++)
-        //        {
-        //            result += $"BrandId= '{BrandId[i]}' or ";
-        //        }
-        //        result = result.Remove(result.Length - 4);
-        //        listProduct = context.Products.FromSqlRaw(result).ToList();
-        //    }
-        //    else
-        //    {
-        //        listProduct = context.Products.ToList();
-        //    }
+            #region Bunu Testi yapıldı çalışıyor
 
-        //    var predicate = PredicateBuilder.False<Foo>();
-        //    predicate = predicate.Or(f => f.A == 1);
-        //    if (allowB)
-        //    {
-        //        predicate = predicate.Or(f => f.B == 1);
-        //    }
+            List<Product> products = null;
 
-        //    var query = collection.Where(predicate);
+            if (brand.Length > 0)//boş gelirse
+            {
+                var predicateProduct = PredicateBuilder.False<Product>();
+                for (int i = 0; i < brand.Length; i++)
+                {
+                    int id = brand[i].Id;
+                    predicateProduct = predicateProduct.Or(p => p.BrandId == id);
+                }
+                products = context.Products.Where(predicateProduct).ToList();//Product Listdönüyor 
+            }
 
-            //    List<Product> l = new List<Product>();
+            #endregion
 
-            //    for (int i = 0; i < listProduct.Count; i++)
-            //    {
-            //        bool bul = false;
-            //        for (int j = 0; j < listProduct[i].Properties.Count; j++)
-            //        {
-            //            for (int k = 0; k < Properties.Length; k++)
-            //            {
-            //                if (Properties[k] == listProduct[i].Properties[j].Id)
-            //                {
-            //                    l.Add(listProduct[i]);
-            //                    bul = true;
-            //                    break;
-            //                }
-            //            }
-            //            if (bul)
-            //            {
-            //                break;
-            //            }
-            //        }
-            //    }
 
-            //    return listProduct;
-            //}
 
-        //}
+            #region MyRegion
+            List<Product> productList = null;
+
+            if (productProperty.Length > 0)
+            {
+                var predicateProperty = PredicateBuilder.False<ProductPropertyProduct>();
+                for (int i = 0; i < productProperty.Length; i++)
+                {
+                    int id = productProperty[i].Id;
+                    predicateProperty = predicateProperty.Or(p => p.ProductProperty.Id == id);
+                }
+                productList = context
+                    .ProductPropertyProducts
+                    .Where(predicateProperty)
+                    .Include(x => x.Product)
+                    .Select(x => x.Product)
+                    .ToList();
+            }
+            #endregion
+
+
+
+            #region MyRegion
+            if (brand.Length > 0 && productProperty.Length > 0) //productProperty dolu brand dolu gelirse ihtimali
+            {
+                List<Product> products1 = (from p in products
+                                           from pl in productList
+                                           where p.Id == pl.Id
+                                           select p).ToList();
+                return products1;
+            }
+
+            if (brand.Length > 0) //productProperty boş brand dolu gelirse ihtimali
+            {
+                return products;
+            }
+            if (productProperty.Length > 0) //productProperty dolu brand boş gelirse ihtimali
+            {
+                return productList;
+            }
+            return null;
+            #endregion
+        }
+
+
 
     }
 }
