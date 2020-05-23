@@ -11,6 +11,6 @@ namespace ECommerce_Entity.Concrete.POCO
         public string ImagePath { get; set; }
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
-        public List<Product> Products { get; set; }
+        public List<ProductCampaign> ProductCampaign { get; set; }
     }
 }

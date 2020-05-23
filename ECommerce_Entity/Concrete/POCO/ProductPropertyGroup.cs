@@ -8,6 +8,6 @@ namespace ECommerce_Entity.Concrete.POCO
     {
         public string Name { get; set; }
         public List<ProductProperty> Properties { get; set; }
-        public List<Category> Categories { get; set; }
+        public List<ProductPropertyGroupCategory> ProductGroupCategory { get; set; }
     }
 }

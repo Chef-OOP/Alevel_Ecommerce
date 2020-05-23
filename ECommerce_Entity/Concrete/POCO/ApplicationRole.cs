@@ -6,7 +6,8 @@ using System.Text;
 
 namespace ECommerce_Entity.Concrete.POCO
 {
-    public class ApplicationRole : IdentityRole<int>,IBaseEntity
+    public class ApplicationRole 
+        : IdentityRole<int>,IBaseEntity
     {
     }
 }

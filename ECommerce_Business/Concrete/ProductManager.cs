@@ -82,10 +82,14 @@ namespace ECommerce_Business.Concrete
             }
         }
 
+      
+
         public EntityResult<List<Product>> GetListByCategory(int CategoryId)
         {
             throw new NotImplementedException();
         }
+
+        
 
         public async Task<EntityResult<List<Product>>> GetListDeleted()
         {
@@ -102,6 +106,8 @@ namespace ECommerce_Business.Concrete
                     new EntityResult<List<Product>>(null, ResultType.Error, "Database Hatası -> " + ex.Message);
             }
         }
+
+        
 
         public EntityResult Update(Product product)
         {
@@ -128,6 +134,32 @@ namespace ECommerce_Business.Concrete
                 return result =
                     new EntityResult(ResultType.Error, "Database Hatası -> " + ex.Message);
             }
+        }
+
+        //public EntityResult<List<Product>> GetListByBrand(int BrandId)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public EntityResult<List<Product>> GetListFilter(int[] PropertyId)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        public async Task<EntityResult<List<Product>>> GetListByListBrand(int[] BrandId)
+        {
+            EntityResult<List<Product>> result = null;
+            try
+            {
+              var r =  await productDal.GetAllAsync(x => x.BrandId == 1);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            throw new NotImplementedException();
         }
     }
 }

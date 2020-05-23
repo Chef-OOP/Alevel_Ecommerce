@@ -8,7 +8,7 @@ namespace ECommerce_Entity.Concrete.POCO
     {
         public string Content { get; set; }
         public int OwnerId { get; set; }
-        public ApplicationUser Owner { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
         public int TicketId { get; set; }
         public Ticket Ticket { get; set; }
     }
