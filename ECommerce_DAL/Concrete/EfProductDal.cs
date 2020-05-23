@@ -3,9 +3,13 @@ using ECommerce_DAL.Concrete;
 using ECommerce_DAL.Concrete.Context;
 using ECommerce_Entity.Concrete.POCO;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using MoreLinq.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +25,18 @@ namespace ECommerce_DAL.Concrete
             this.context = context;
         }
 
+        public async Task<List<Product>> GetAdvicedsByCount(int count)
+        {
+            var list = await context.Products.Where(x => x.IsAdviced).Take(count).ToListAsync();
+            return list;
+        }
+
+        public async Task<List<Product>> GetBestSellingsByCount(int count)
+        {
+           var list = await context.Products.OrderByDescending(x => x.Selling).Take(count).ToListAsync();
+
+            return list;
+        }
 
         public List<Product> GetListByListBrand(Brand[] brand, ProductProperty[] productProperty)
         {
@@ -45,7 +61,7 @@ namespace ECommerce_DAL.Concrete
 
 
             #region MyRegion
-            List<Product> productList = null;
+            List<Product> productList = new List<Product>();
 
             if (productProperty.Length > 0)
             {
@@ -60,7 +76,11 @@ namespace ECommerce_DAL.Concrete
                     .Where(predicateProperty)
                     .Include(x => x.Product)
                     .Select(x => x.Product)
+                    .DistinctBy(x=>x.Id)
                     .ToList();
+
+                // distinctby 188 ms
+                //productList = productList.ToList();
             }
             #endregion
 
@@ -87,6 +107,7 @@ namespace ECommerce_DAL.Concrete
             return null;
             #endregion
         }
+
 
 
 

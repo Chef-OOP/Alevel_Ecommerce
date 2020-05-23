@@ -12,6 +12,8 @@ namespace ECommerce_Entity.Concrete.POCO
         public decimal DiscountedPrice { get; set; }
         public decimal? Discount { get; set; }
         public decimal? Tax { get; set; }
+        public int Selling { get; set; }
+        public bool IsAdviced { get; set; }
         public int Stock { get; set; }
         public List<ProductImage> Images { get; set; }
         public List<ProductCampaign> ProductCampaign { get; set; }

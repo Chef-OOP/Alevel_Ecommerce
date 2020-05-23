@@ -12,5 +12,10 @@ namespace ECommerce_DAL.Abstarct
         : IRepository<Product>
     {
         //List<Product> GetListByListBrand(int[] BrandId);
+        List<Product> GetListByListBrand(Brand[] brand, ProductProperty[] productProperty);
+
+        Task<List<Product>> GetBestSellingsByCount(int count);
+
+        Task<List<Product>> GetAdvicedsByCount(int count);
     }
 }
