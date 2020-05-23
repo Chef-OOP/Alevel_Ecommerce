@@ -13,6 +13,7 @@ namespace ECommerce_Entity.Concrete.POCO
         public string Name { get; set; }
         public string Surname { get; set; }
         public Gender Gender { get; set; }
+        public string TCKN { get; set; }
         public List<Address> Addresses { get; set; }
         public List<Ticket> Tickets { get; set; }
         public List<TicketResponse> TicketResponses { get; set; }
