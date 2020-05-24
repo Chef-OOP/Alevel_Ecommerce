@@ -18,5 +18,9 @@ namespace ECommerce_Entity.Concrete.Constants
     {
         Waiting,OnTheWay,Completed
     }
-    
+    public enum PaymenStatus
+    {
+        CreditCard, Coupon
+    }
+
 }

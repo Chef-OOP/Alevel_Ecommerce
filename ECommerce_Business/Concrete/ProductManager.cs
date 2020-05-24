@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace ECommerce_Business.Concrete
 {
     public class ProductManager
-        : IProductServis
+        : IProductService
     {
         private readonly IProductDal productDal;
 
@@ -58,7 +58,7 @@ namespace ECommerce_Business.Concrete
 
         public EntityResult Delete(Product product)
         {
-            EntityResult result = new EntityResult(ResultType.Warning, "Databaseden kalıcı olarak ürün silemzsiniz");
+            EntityResult result = new EntityResult(ResultType.Warning, "Databaseden kalıcı olarak ürün silemezsiniz");
             return result;
         }
 

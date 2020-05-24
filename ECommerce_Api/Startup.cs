@@ -2,6 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using ECommerce_Business.Abstarct;
+using ECommerce_Business.Concrete;
+using ECommerce_DAL.Abstarct;
+using ECommerce_DAL.Concrete;
+using ECommerce_DAL.Concrete.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -18,6 +24,7 @@ namespace ECommerce_Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -25,6 +32,50 @@ namespace ECommerce_Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder => builder
+                 .AllowAnyOrigin()
+                 .AllowAnyMethod()
+                 .AllowAnyHeader()
+                 .AllowCredentials()
+                 .Build());
+            });
+
+            services.AddDbContext<ECommerceContext>();
+            services.AddAutoMapper(typeof(Startup));
+            #region IoC
+            services.AddScoped<IBrandService, BrandManager>();
+            services.AddScoped<IBrandDal, EfBrandDal>();
+
+            services.AddScoped<ICategoryService, CategoryManager>();
+            services.AddScoped<ICategoryDal, EfCategoryDal>();
+
+            services.AddScoped<IMasterCategoryService, MasterCategoryManager>();
+            services.AddScoped<IMasterCategoryDal, EfMasterCategoryDal>();
+
+            services.AddScoped<IOrderItemService, OrderItemManager>();
+            services.AddScoped<IOrderItemDal, EfOrderItemDal>();
+
+            services.AddScoped<IProductImageService, ProductImageManager>();
+            services.AddScoped<IProductImageDal, EfProductImageDal>();
+
+            services.AddScoped<IProductPropertyGroupService, ProductPropertyGroupManager>();
+            services.AddScoped<IProductPropertyGroupDal, EfProductPropertyGroupDal>();
+
+            services.AddScoped<IProductPropertyService, ProductPropertyManager>();
+            services.AddScoped<IProductPropertyDal, EfProductPropertyDal>();
+
+            services.AddScoped<IProductService, ProductManager>();
+            services.AddScoped<IProductDal, EfProductDal>();
+
+            services.AddScoped<ISliderImageService, SliderImageManager>();
+            services.AddScoped<ISliderImageDal, EfSliderImageDal>();
+
+            services.AddScoped<ISliderService, SliderManager>();
+            services.AddScoped<ISliderDal, EfSliderDal>();
+            #endregion
+
             services.AddControllers();
         }
 

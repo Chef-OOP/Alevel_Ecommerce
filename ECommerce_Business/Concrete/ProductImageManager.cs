@@ -5,12 +5,11 @@ using ECommerce_Entity.Constant;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ECommerce_Business.Concrete
 {
-    public class ProductImageManager
+    public class ProductImageManager : IProductImageService
     {
         private readonly IProductImageDal productImageDal;
         public ProductImageManager(IProductImageDal _productImageDal)

@@ -28,7 +28,7 @@ namespace ECommerce_Business.Concrete
 
                 if (masterCategoryDal.Add(model) > 0)
                     return new EntityResult(ResultType.Success, "Üst kategori başarıyla eklendi");
-                return new EntityResult(ResultType.Warning, "Üst kategori ekleme sırasında bir hata oluştu");
+                return new EntityResult(ResultType.Warning, "Üst kategori ekleme başarısız");
             }
             catch (Exception ex)
             {
@@ -48,7 +48,7 @@ namespace ECommerce_Business.Concrete
                 var masterCategory = await masterCategoryDal.GetAsync(x => x.Id == id);
                 if (masterCategory != null)
                     return new EntityResult<MasterCategory>(masterCategory, ResultType.Success);
-                return new EntityResult<MasterCategory>(null, ResultType.Warning, "Aradığınız üst kategori bulunamadı");
+                return new EntityResult<MasterCategory>(null, ResultType.Info, "Aradığınız üst kategori bulunamadı");
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace ECommerce_Business.Concrete
                 var masterCategories = await masterCategoryDal.GetAllAsync(filter);
                 if (masterCategories.Count > 0)
                     return new EntityResult<List<MasterCategory>>(masterCategories, ResultType.Success);
-                return new EntityResult<List<MasterCategory>>(masterCategories, ResultType.Info, "Hiç üst kategori bulunamadı");
+                return new EntityResult<List<MasterCategory>>(masterCategories, ResultType.Info, "Üst kategori bulunamadı");
             }
             catch (Exception ex)
             {

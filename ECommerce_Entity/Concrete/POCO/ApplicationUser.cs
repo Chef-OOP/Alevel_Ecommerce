@@ -18,5 +18,7 @@ namespace ECommerce_Entity.Concrete.POCO
         public List<Address> Addresses { get; set; }
         public List<Ticket> Tickets { get; set; }
         public List<TicketResponse> TicketResponses { get; set; }
+        public List<Order> Orders { get; set; }
+
     }
 }

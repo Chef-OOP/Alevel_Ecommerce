@@ -7,6 +7,13 @@ namespace ECommerce_Entity.Concrete.POCO
 {
     public class BaseEntity : IBaseEntity
     {
+        public BaseEntity()
+        {
+            Created = DateTime.Now;
+            Updated = DateTime.Now;
+            IsActive = true;
+            IsDeleted = false;
+        }
         public int Id { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsActive { get; set; }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce_Business.Abstarct
 {
-    public interface IProductServis : IGenericService<Product>
+    public interface IProductService : IGenericService<Product>
     {
         
         Task<EntityResult<List<Product>>> GetListDeleted();
