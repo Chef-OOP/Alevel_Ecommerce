@@ -18,6 +18,8 @@ namespace ECommerce_Entity.Concrete.POCO
         public List<ProductImage> Images { get; set; }
         public List<ProductCampaign> ProductCampaign { get; set; }
         public List<ProductPropertyProduct> ProductPropertyProducts { get; set; }
+
+        public List<OrderItem> OrderItems { get; set; }
         public int BrandId { get; set; }
         public Brand Brand { get; set; }
         public int CategoryId { get; set; }
