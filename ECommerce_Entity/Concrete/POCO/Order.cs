@@ -5,22 +5,31 @@ using System.Text;
 
 namespace ECommerce_Entity.Concrete.POCO
 {
-    public class Order 
+    public class Order
     {
         public int Id { get; set; }
-
         public DateTime Created { get; set; }
+        public decimal Price { get; set; }
+        public decimal Discount { get; set; }
+        public decimal Tax { get; set; }
+        public decimal NetPrice { get; set; }
+        public OrderStatus Status { get; set; }
+
+
+
+        public int? PaymentId { get; set; }
+        public Payment Payment { get; set; }
+
 
         public int ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
-        public Address InvoiceAddress { get; set; }
+        public int ShippingAddressId { get; set; }
         public Address ShippingAddress { get; set; }
-
+        public int InvoiceAddressId { get; set; }
+        public Address InvoiceAddress { get; set; }
         public List<OrderItem> OrderItems { get; set; }
-
-        public OrderStatus Status { get; set; }
     }
 
-    
+
 }

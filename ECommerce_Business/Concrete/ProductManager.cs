@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -61,17 +62,12 @@ namespace ECommerce_Business.Concrete
             return result;
         }
 
-        public EntityResult<Product> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<EntityResult<List<Product>>> GetList()
+        public async Task<EntityResult<List<Product>>> GetList(Expression<Func<Product, bool>> filter = null)
         {
             EntityResult<List<Product>> result = null;
             try
             {
-                List<Product> products = await productDal.GetAllAsync();
+                List<Product> products = await productDal.GetAllAsync(filter);
                 return result =
                     new EntityResult<List<Product>>(products);
             }
@@ -105,13 +101,6 @@ namespace ECommerce_Business.Concrete
                 return result =
                     new EntityResult<List<Product>>(null, ResultType.Error, "Database Hatası -> " + ex.Message);
             }
-        }
-
-        
-
-        public EntityResult Update(Product product)
-        {
-            throw new NotImplementedException();
         }
 
         public EntityResult UpDelete(Product product)
@@ -159,6 +148,16 @@ namespace ECommerce_Business.Concrete
 
                 throw;
             }
+            throw new NotImplementedException();
+        }
+
+        public Task<EntityResult<Product>> GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<EntityResult> Update(Product model)
+        {
             throw new NotImplementedException();
         }
     }

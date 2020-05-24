@@ -13,5 +13,6 @@ namespace ECommerce_Entity.Concrete.POCO
         public string PostalCode { get; set; }
         public int UserId { get; set; }
         public ApplicationUser User { get; set; }
+        public List<Order> Orders { get; set; }
     }
 }

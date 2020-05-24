@@ -8,21 +8,14 @@ using System.Threading.Tasks;
 
 namespace ECommerce_Business.Abstarct
 {
-    public interface IProductServis
+    public interface IProductServis : IGenericService<Product>
     {
-        Task<EntityResult<List<Product>>> GetList();
+        
         Task<EntityResult<List<Product>>> GetListDeleted();
         EntityResult<List<Product>> GetListByCategory(int CategoryId);
 
         //EntityResult<List<Product>> GetListByBrand(int BrandId);
         Task<EntityResult<List<Product>>> GetListByListBrand(int[] BrandId);
         //EntityResult<List<Product>> GetListFilter(int[] PropertyId);
-        
-        
-        EntityResult<Product> GetById(int id);
-        Task<EntityResult> Add(Product product);
-        EntityResult Delete(Product product);  
-        EntityResult UpDelete(Product product);  
-        EntityResult Update(Product product);
     }
 }
