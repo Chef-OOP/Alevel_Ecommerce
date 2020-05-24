@@ -16,7 +16,9 @@ namespace ECommerce_Api.Mapping
         {
             CreateMap<MasterCategory, MasterCategoryDto>();
             CreateMap<MasterCategoryDto, MasterCategory>();
-            
+
+            CreateMap<Category, CategoryDto>();
+            CreateMap<CategoryDto, Category>();
         }
     }
 }
