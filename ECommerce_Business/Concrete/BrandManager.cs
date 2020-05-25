@@ -97,20 +97,6 @@ namespace ECommerce_Business.Concrete
             }
         }
 
-        public EntityResult UpDelete(Brand model)
-        {
-            try
-            {
-                model.IsDeleted = true;
-                model.IsActive = false;
-                if (brandDal.UpDelete(model) > 0)
-                    return new EntityResult(ResultType.Success, $"{model.Name} isimli marka silindi");
-                return new EntityResult(ResultType.Warning, "Silme sırasında bir hata oluştu");
-            }
-            catch (Exception ex)
-            {
-                return new EntityResult(ResultType.Error, "Database hatası: " + ex.Message);
-            }
-        }
+        
     }
 }

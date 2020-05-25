@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using AutoMapper.Configuration.Conventions;
+﻿using AutoMapper;
 using ECommerce_Api.DTOs;
+using ECommerce_Api.ExtensionMethod;
+using ECommerce_Api.Filters;
 using ECommerce_Business.Abstarct;
 using ECommerce_Entity.Concrete.POCO;
 using ECommerce_Entity.Constant;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ECommerce_Api.Controllers
 {
@@ -29,8 +28,9 @@ namespace ECommerce_Api.Controllers
             this.mapper = mapper;
         }
 
+
         [HttpGet]
-        public  async Task<IActionResult> Get()
+        public async Task<IActionResult> Get()
         {
             var result = await masterCategoryService.GetList();
             switch (result.ResultType)
@@ -49,7 +49,7 @@ namespace ECommerce_Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var result =await masterCategoryService.GetById(id);
+            var result = await masterCategoryService.GetById(id);
             switch (result.ResultType)
             {
                 case ResultType.Success:
@@ -63,34 +63,59 @@ namespace ECommerce_Api.Controllers
         }
 
 
-
+        [ValidationFilter]
         [HttpPost]
-        public async Task<IActionResult> Post(MasterCategoryDto masterCategoryDto)
+        public async Task<IActionResult> Post(MasterCategoryDto masterCategoryDto,
+            IFormFile fileLogo,
+            IFormFile fileImage)
         {
-                var result =
-                await masterCategoryService.Add(mapper.Map<MasterCategory>(masterCategoryDto));
 
-                switch (result.ResultType)
-                {
-                    case ResultType.Success:
-                        return Created("", result.Message);
-                    case ResultType.Info:
-                        return BadRequest(result.Message);
-                    case ResultType.Error:
-                        return BadRequest(result.Message);
-                    case ResultType.Warning:
-                        return BadRequest(result.Message);
+            if (fileLogo == null)
+                ModelState.AddModelError("Logo Null", "Logo alanı Boş Geöilemez");
+            if (fileImage == null)
+                ModelState.AddModelError("Image Null", "Image alanı Boş geçilemez");
+
+            masterCategoryDto.Logo =
+                await AlevelExtensions.ReadFile(fileLogo, "wwwroot/img/masterCategory/");
+
+            masterCategoryDto.ImagePath =
+                await AlevelExtensions.ReadFile(fileImage, "wwwroot/img/masterCategory/");
+
+
+            var result =
+            await masterCategoryService.Add(mapper.Map<MasterCategory>(masterCategoryDto));
+
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    return Created("", result.Message);
+                case ResultType.Info:
+                    return BadRequest(result.Message);
+                case ResultType.Error:
+                    return BadRequest(result.Message);
+                case ResultType.Warning:
+                    return BadRequest(result.Message);
             }
-            
+
             return NoContent();
         }
 
 
-
         [HttpPut]
-        public async Task<IActionResult> Put(MasterCategoryDto masterCategoryDto)
+        public async Task<IActionResult> Put(MasterCategoryDto masterCategoryDto,
+            IFormFile fileLogo,
+            IFormFile fileImage)
         {
             masterCategoryDto.Updated = DateTime.Now;
+
+            if (fileImage != null)
+                masterCategoryDto.ImagePath =
+                await AlevelExtensions.ReadFile(fileImage, "wwwroot/img/masterCategory/");
+
+            if (fileLogo != null)
+                masterCategoryDto.Logo =
+                await AlevelExtensions.ReadFile(fileLogo, "wwwroot/img/masterCategory/");
+
             var result =
                 await masterCategoryService.Update(mapper.Map<MasterCategory>(masterCategoryDto));
 
@@ -110,6 +135,26 @@ namespace ECommerce_Api.Controllers
         }
 
 
+        [HttpDelete]
+        public IActionResult Delete(MasterCategoryDto masterCategoryDto)
+        {
+            var result =
+                 masterCategoryService.Delete(mapper.Map<MasterCategory>(masterCategoryDto));
+
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    return Created("", result.Message);
+                case ResultType.Info:
+                    return BadRequest(result.Message);
+                case ResultType.Error:
+                    return BadRequest(result.Message);
+                case ResultType.Warning:
+                    return BadRequest(result.Message);
+            }
+
+            return NoContent();
+        }
 
     }
 }

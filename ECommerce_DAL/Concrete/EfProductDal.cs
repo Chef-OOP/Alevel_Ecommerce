@@ -2,6 +2,7 @@
 using ECommerce_DAL.Concrete;
 using ECommerce_DAL.Concrete.Context;
 using ECommerce_Entity.Concrete.POCO;
+using ECommerce_Entity.Constant;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using MoreLinq.Extensions;
@@ -25,17 +26,21 @@ namespace ECommerce_DAL.Concrete
             this.context = context;
         }
 
+        public async Task<Product> AddProduct(Product product)
+        {
+            var result = await context.AddAsync(product);
+            await context.SaveChangesAsync();
+            return result.Entity;
+        }
+
         public async Task<List<Product>> GetAdvicedsByCount(int count)
         {
-            var list = await context.Products.Where(x => x.IsAdviced).Take(count).ToListAsync();
-            return list;
+            return await context.Products.Where(x => x.IsAdviced).Take(count).ToListAsync();
         }
 
         public async Task<List<Product>> GetBestSellingsByCount(int count)
         {
-           var list = await context.Products.OrderByDescending(x => x.Selling).Take(count).ToListAsync();
-
-            return list;
+            return await context.Products.OrderByDescending(x => x.Selling).Take(count).ToListAsync();
         }
 
         public List<Product> GetListByListBrand(Brand[] brand, ProductProperty[] productProperty)
@@ -76,7 +81,7 @@ namespace ECommerce_DAL.Concrete
                     .Where(predicateProperty)
                     .Include(x => x.Product)
                     .Select(x => x.Product)
-                    .DistinctBy(x=>x.Id)
+                    .DistinctBy(x => x.Id)
                     .ToList();
 
                 // distinctby 188 ms

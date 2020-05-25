@@ -12,10 +12,11 @@ namespace ECommerce_Business.Abstarct
     {
         
         Task<EntityResult<List<Product>>> GetListDeleted();
-        EntityResult<List<Product>> GetListByCategory(int CategoryId);
-
-        //EntityResult<List<Product>> GetListByBrand(int BrandId);
+        Task<EntityResult<List<Product>>> GetListByCategory(int CategoryId);
         Task<EntityResult<List<Product>>> GetListByListBrand(int[] BrandId);
-        //EntityResult<List<Product>> GetListFilter(int[] PropertyId);
+        Task<EntityResult<Product>> AddProduct(Product product);
+        EntityResult<List<Product>> GetListByListBrand(Brand[] brand, ProductProperty[] productProperty);
+        Task<EntityResult<List<Product>>> GetBestSellingsByCount(int count);
+        Task<EntityResult<List<Product>>> GetAdvicedsByCount(int count);
     }
 }

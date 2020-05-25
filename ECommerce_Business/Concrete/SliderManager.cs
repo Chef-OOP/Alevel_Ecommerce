@@ -89,20 +89,6 @@ namespace ECommerce_Business.Concrete
             }
         }
 
-        public EntityResult UpDelete(Slider model)
-        {
-            try
-            {
-                model.IsDeleted = true;
-                model.IsActive = false;
-                if (sliderDal.UpDelete(model) > 0)
-                    return new EntityResult(ResultType.Success, $"{model.Name} isimli slider silindi");
-                return new EntityResult(ResultType.Warning, "Silme sırasında bir hata oluştu");
-            }
-            catch (Exception ex)
-            {
-                return new EntityResult(ResultType.Error, "Database hatası: " + ex.Message);
-            }
-        }
+        
     }
 }

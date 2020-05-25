@@ -13,7 +13,6 @@ namespace ECommerce_Business.Abstarct
         Task<EntityResult<List<T>>> GetList(Expression<Func<T,bool>> filter = null);
         Task<EntityResult> Add(T model);
         EntityResult Delete(T model);
-        EntityResult UpDelete(T model);
         Task<EntityResult> Update(T model);
     }
 }

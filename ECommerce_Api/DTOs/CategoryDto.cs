@@ -14,11 +14,9 @@ namespace ECommerce_Api.DTOs
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
 
-        [Required(ErrorMessage ="Kategori adı gereklidir")]
         [Display(Name="Üst kategori: ")]
         public string Name { get; set; }
         public string Description { get; set; }
-        [Required(ErrorMessage = "Kategori görseli gereklidir")]
         [Display(Name = "Kapak görseli: ")]
         public string ImagePath { get; set; }
         public int MasterCategoryId { get; set; }

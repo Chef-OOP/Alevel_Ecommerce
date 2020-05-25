@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using ECommerce_Business.Abstarct;
@@ -75,6 +76,11 @@ namespace ECommerce_Api
             services.AddScoped<ISliderService, SliderManager>();
             services.AddScoped<ISliderDal, EfSliderDal>();
             #endregion
+            services.Configure<ApiBehaviorOptions>(opt =>
+            {
+                opt.SuppressModelStateInvalidFilter = true; 
+
+            });
 
             services.AddControllers();
         }
@@ -86,7 +92,7 @@ namespace ECommerce_Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
 
             app.UseRouting();

@@ -19,9 +19,7 @@ namespace ECommerce_Api.DTOs
         [Display(Name="Üst kategori adı: ")]
         public string Name { get; set; }
         public string Description { get; set; }
-        [Required(ErrorMessage ="Üst kategori kapak görseli zorunludur")]
         public string ImagePath { get; set; }
-        [Required(ErrorMessage ="Navbar'a Ekleme Yapılacağı için zorunludur")]
         public string Logo { get; set; }
     }
 }

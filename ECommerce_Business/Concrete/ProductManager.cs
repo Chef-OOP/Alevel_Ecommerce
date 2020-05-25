@@ -56,10 +56,58 @@ namespace ECommerce_Business.Concrete
             }
         }
 
+
+        public async Task<EntityResult<Product>> AddProduct(Product product)
+        {
+            try
+            {
+                #region Ürün Adı Kontrolü
+                var pro = await productDal
+                    .GetAsync(x => x.Name.ToLower() == product.Name.ToLower());
+
+                if (pro != null)
+                    return 
+                        new EntityResult<Product>(null,ResultType.Info, $"{product.Name} Ürünü Aynı isimde Mevcut");
+                #endregion
+
+                var result = await productDal.AddProduct(product);
+                
+                 if(result!=null)
+                    return 
+                        new EntityResult<Product>(result, ResultType.Success, "Ekleme işlemi Başarılı");
+                else
+                    return
+                        new EntityResult<Product>(null, ResultType.Warning, "Ekleme işlemi başarısız");
+            }
+            catch (Exception ex)
+            {
+                return
+                    new EntityResult<Product>(null, ResultType.Error, "Database Hatası -> " + ex.Message);
+            }
+          
+        }
+
         public EntityResult Delete(Product product)
         {
-            EntityResult result = new EntityResult(ResultType.Warning, "Databaseden kalıcı olarak ürün silemezsiniz");
-            return result;
+            return
+                new EntityResult(ResultType.Warning, "Databaseden kalıcı olarak ürün silemezsiniz");
+        }
+
+        public Task<EntityResult<List<Product>>> GetAdvicedsByCount(int count)
+        {
+            //TODO : Doldur
+            throw new NotImplementedException();
+        }
+
+        public Task<EntityResult<List<Product>>> GetBestSellingsByCount(int count)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<EntityResult<Product>> GetById(int id)
+        {
+            //TODO : Doldur
+            throw new NotImplementedException();
         }
 
         public async Task<EntityResult<List<Product>>> GetList(Expression<Func<Product, bool>> filter = null)
@@ -78,14 +126,33 @@ namespace ECommerce_Business.Concrete
             }
         }
 
-      
-
-        public EntityResult<List<Product>> GetListByCategory(int CategoryId)
+        public async Task<EntityResult<List<Product>>> GetListByCategory(int CategoryId)
         {
+            EntityResult<List<Product>> result = null;
+            try
+            {
+                List<Product> products = await productDal.GetAllAsync(x => x.CategoryId == CategoryId);
+                return result =
+                    new EntityResult<List<Product>>(products);
+            }
+            catch (Exception ex)
+            {
+                return result =
+                    new EntityResult<List<Product>>(null, ResultType.Error, "Database Hatası -> " + ex.Message);
+            }
+        }
+
+        public Task<EntityResult<List<Product>>> GetListByListBrand(int[] BrandId)
+        {
+            //TODO : Doldur
             throw new NotImplementedException();
         }
 
-        
+        public EntityResult<List<Product>> GetListByListBrand(Brand[] brand, ProductProperty[] productProperty)
+        {
+            //TODO : Doldur
+            throw new NotImplementedException();
+        }
 
         public async Task<EntityResult<List<Product>>> GetListDeleted()
         {
@@ -103,61 +170,9 @@ namespace ECommerce_Business.Concrete
             }
         }
 
-        public EntityResult UpDelete(Product product)
-        {
-            EntityResult result = null;
-            try
-            {
-                product.IsDeleted = true;
-                var databaseResult = productDal.UpDelete(product);
-                if (databaseResult > 0)
-                    return result =
-                        new EntityResult(ResultType.Success, $"{product.Name} Ürünü Silindi");
-                else
-                    return result =
-                        new EntityResult(ResultType.Warning, "Silme İşlemi Başarısız");
-
-            }
-            catch (Exception ex)
-            {
-                return result =
-                    new EntityResult(ResultType.Error, "Database Hatası -> " + ex.Message);
-            }
-        }
-
-        //public EntityResult<List<Product>> GetListByBrand(int BrandId)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public EntityResult<List<Product>> GetListFilter(int[] PropertyId)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        public async Task<EntityResult<List<Product>>> GetListByListBrand(int[] BrandId)
-        {
-            EntityResult<List<Product>> result = null;
-            try
-            {
-              var r =  await productDal.GetAllAsync(x => x.BrandId == 1);
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            throw new NotImplementedException();
-        }
-
-        public Task<EntityResult<Product>> GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<EntityResult> Update(Product model)
         {
+            //TODO : Doldur
             throw new NotImplementedException();
         }
     }

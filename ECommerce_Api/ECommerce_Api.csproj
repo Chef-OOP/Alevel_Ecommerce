@@ -13,5 +13,11 @@
     <ProjectReference Include="..\ECommerce_Business\ECommerce_Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\category\" />
+    <Folder Include="wwwroot\img\masterCategory\" />
+    <Folder Include="wwwroot\img\product\" />
+  </ItemGroup>
+
 
 </Project>

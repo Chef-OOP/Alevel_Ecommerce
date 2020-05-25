@@ -11,11 +11,12 @@ namespace ECommerce_DAL.Abstarct
     public interface IProductDal
         : IRepository<Product>
     {
-        //List<Product> GetListByListBrand(int[] BrandId);
         List<Product> GetListByListBrand(Brand[] brand, ProductProperty[] productProperty);
 
         Task<List<Product>> GetBestSellingsByCount(int count);
 
         Task<List<Product>> GetAdvicedsByCount(int count);
+        Task<Product> AddProduct(Product product);
+      
     }
 }
