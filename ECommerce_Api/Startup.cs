@@ -11,6 +11,7 @@ using ECommerce_DAL.Concrete;
 using ECommerce_DAL.Concrete.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -33,16 +34,20 @@ namespace ECommerce_Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy", builder => builder
+            //     .AllowAnyOrigin()
+            //     .AllowAnyMethod()
+            //     .AllowAnyHeader()
+            //     .AllowCredentials()
+            //     .Build());
+            //});
+            services.Configure<FormOptions>(options =>
             {
-                options.AddPolicy("CorsPolicy", builder => builder
-                 .AllowAnyOrigin()
-                 .AllowAnyMethod()
-                 .AllowAnyHeader()
-                 .AllowCredentials()
-                 .Build());
+                options.MultipartBodyLengthLimit = long.MaxValue;
+                options.BufferBody = true;
             });
-
             services.AddDbContext<ECommerceContext>();
             services.AddAutoMapper(typeof(Startup));
             #region IoC
@@ -75,6 +80,10 @@ namespace ECommerce_Api
 
             services.AddScoped<ISliderService, SliderManager>();
             services.AddScoped<ISliderDal, EfSliderDal>();
+
+            services.AddScoped<IProductPropertyProductsService, ProductPropertyProductsManager>();
+            services.AddScoped<IProductPropertyProductsDal, EfProductPropertyProductsDal>();
+
             #endregion
             services.Configure<ApiBehaviorOptions>(opt =>
             {
@@ -82,7 +91,10 @@ namespace ECommerce_Api
 
             });
 
-            services.AddControllers();
+            services.AddControllers(opt=>
+            {
+                opt.RespectBrowserAcceptHeader = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

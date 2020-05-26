@@ -43,7 +43,7 @@ namespace ECommerce_DAL.Concrete
             return await context.Products.OrderByDescending(x => x.Selling).Take(count).ToListAsync();
         }
 
-        public List<Product> GetListByListBrand(Brand[] brand, ProductProperty[] productProperty)
+        public List<Product> GetListByListBrand(int[] brand, int[] productProperty)
         {
 
             #region Bunu Testi yapıldı çalışıyor
@@ -55,14 +55,13 @@ namespace ECommerce_DAL.Concrete
                 var predicateProduct = PredicateBuilder.False<Product>();
                 for (int i = 0; i < brand.Length; i++)
                 {
-                    int id = brand[i].Id;
+                    int id = brand[i];
                     predicateProduct = predicateProduct.Or(p => p.BrandId == id);
                 }
                 products = context.Products.Where(predicateProduct).ToList();//Product Listdönüyor 
             }
 
             #endregion
-
 
 
             #region MyRegion
@@ -73,7 +72,7 @@ namespace ECommerce_DAL.Concrete
                 var predicateProperty = PredicateBuilder.False<ProductPropertyProduct>();
                 for (int i = 0; i < productProperty.Length; i++)
                 {
-                    int id = productProperty[i].Id;
+                    int id = productProperty[i];
                     predicateProperty = predicateProperty.Or(p => p.ProductProperty.Id == id);
                 }
                 productList = context

@@ -75,7 +75,9 @@ namespace ECommerce_Business.Concrete
         {
             try
             {
-                var category = await masterCategoryDal.GetAsync(x => x.Id != model.Id && x.Name == model.Name);
+                var category = 
+                    await masterCategoryDal
+                    .GetAsync(x => x.Id != model.Id && x.Name.ToLower() == model.Name.ToLower());
                 if (category != null)
                     return new EntityResult(ResultType.Info, $"{model.Name} isimli bir üst kategori zaten mevcut");
 

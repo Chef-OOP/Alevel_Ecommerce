@@ -15,6 +15,9 @@ namespace ECommerce_Entity.Concrete.POCO
         public Gender Gender { get; set; }
         public string TCKN { get; set; }
         public bool IsAnonymous { get; set; }
+        public bool AllowEmail { get; set; }
+        public bool AllowSms { get; set; }
+        
         public List<Address> Addresses { get; set; }
         public List<Ticket> Tickets { get; set; }
         public List<TicketResponse> TicketResponses { get; set; }

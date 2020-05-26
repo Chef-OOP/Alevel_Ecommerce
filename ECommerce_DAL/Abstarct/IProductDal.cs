@@ -11,7 +11,7 @@ namespace ECommerce_DAL.Abstarct
     public interface IProductDal
         : IRepository<Product>
     {
-        List<Product> GetListByListBrand(Brand[] brand, ProductProperty[] productProperty);
+        List<Product> GetListByListBrand(int[] brand, int[] productProperty);
 
         Task<List<Product>> GetBestSellingsByCount(int count);
 

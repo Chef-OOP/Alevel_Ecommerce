@@ -7,8 +7,12 @@ using ECommerce_Entity.Concrete.POCO;
 using ECommerce_Entity.Constant;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace ECommerce_Api.Controllers
@@ -42,7 +46,7 @@ namespace ECommerce_Api.Controllers
                 case ResultType.Error:
                     return BadRequest(result.Message);
             }
-            return BadRequest("null");
+            return NoContent();
         }
 
 
@@ -59,15 +63,15 @@ namespace ECommerce_Api.Controllers
                 case ResultType.Error:
                     return BadRequest(result.Message);
             }
-            return null;
+            return NoContent();
         }
-
 
         [ValidationFilter]
         [HttpPost]
-        public async Task<IActionResult> Post(MasterCategoryDto masterCategoryDto,
-            IFormFile fileLogo,
-            IFormFile fileImage)
+        public async Task<IActionResult> Post(
+            [FromForm] MasterCategoryDto masterCategoryDto,
+            [FromForm] IFormFile fileLogo,
+            [FromForm] IFormFile fileImage)
         {
 
             if (fileLogo == null)
@@ -75,11 +79,14 @@ namespace ECommerce_Api.Controllers
             if (fileImage == null)
                 ModelState.AddModelError("Image Null", "Image alanı Boş geçilemez");
 
-            masterCategoryDto.Logo =
-                await AlevelExtensions.ReadFile(fileLogo, "wwwroot/img/masterCategory/");
+            if (ModelState.IsValid)
+            {
+                masterCategoryDto.Logo =
+              await AlevelExtensions.ReadFile(fileLogo, "wwwroot/img/masterCategory/");
 
-            masterCategoryDto.ImagePath =
-                await AlevelExtensions.ReadFile(fileImage, "wwwroot/img/masterCategory/");
+                masterCategoryDto.Image =
+                    await AlevelExtensions.ReadFile(fileImage, "wwwroot/img/masterCategory/");
+            }
 
 
             var result =
@@ -102,14 +109,15 @@ namespace ECommerce_Api.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> Put(MasterCategoryDto masterCategoryDto,
+        public async Task<IActionResult> Put(
+            MasterCategoryDto masterCategoryDto,
             IFormFile fileLogo,
             IFormFile fileImage)
         {
             masterCategoryDto.Updated = DateTime.Now;
 
             if (fileImage != null)
-                masterCategoryDto.ImagePath =
+                masterCategoryDto.Image =
                 await AlevelExtensions.ReadFile(fileImage, "wwwroot/img/masterCategory/");
 
             if (fileLogo != null)
@@ -133,7 +141,6 @@ namespace ECommerce_Api.Controllers
 
             return NoContent();
         }
-
 
         [HttpDelete]
         public IActionResult Delete(MasterCategoryDto masterCategoryDto)

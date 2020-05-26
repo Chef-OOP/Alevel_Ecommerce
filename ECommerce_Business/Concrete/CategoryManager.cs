@@ -22,7 +22,7 @@ namespace ECommerce_Business.Concrete
         {
             try
             {
-                var category = await categoryDal.GetAsync(x => x.Name.ToLower() == model.Name.ToLower());
+                var category = await categoryDal.GetAsync(x => x.Id != model.Id && x.Name.ToLower() == model.Name.ToLower());
                 if (category != null)
                     return new EntityResult(ResultType.Info, $"{model.Name} isimli bir kategori zaten mevcut");
 
@@ -75,7 +75,9 @@ namespace ECommerce_Business.Concrete
         {
             try
             {
-                var category = await categoryDal.GetAsync(x => x.Id != model.Id && x.Name == model.Name);
+                var category = 
+                    await categoryDal
+                    .GetAsync(x=>x.Name.ToLower() == model.Name.ToLower());
                 if (category != null)
                     return new EntityResult(ResultType.Info, $"{model.Name} isimli bir kategori zaten mevcut");
 

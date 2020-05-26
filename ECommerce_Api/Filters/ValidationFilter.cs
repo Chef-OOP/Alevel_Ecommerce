@@ -14,7 +14,8 @@ namespace ECommerce_Api.Filters
     public class ValidationFilter
         : ActionFilterAttribute
     {
-        public override void OnActionExecuted(ActionExecutedContext context)
+       
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             if (!context.ModelState.IsValid)
             {
@@ -29,7 +30,7 @@ namespace ECommerce_Api.Filters
                 });
                 context.Result = new BadRequestObjectResult(errorDto);
             }
-            base.OnActionExecuted(context);
+            base.OnActionExecuting(context);
         }
     }
 }

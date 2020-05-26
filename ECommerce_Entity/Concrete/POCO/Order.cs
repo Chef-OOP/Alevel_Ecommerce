@@ -19,13 +19,8 @@ namespace ECommerce_Entity.Concrete.POCO
 
         public int ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
-
-        //public int AddressId { get; set; }
-        //public Address Address { get; set; }
-        //public int ShippingAddressId { get; set; }
-        //public Address ShippingAddress { get; set; }
-        //public int InvoiceAddressId { get; set; }
-        //public Address InvoiceAddress { get; set; }
+        public int AddressId { get; set; }
+        public Address Address { get; set; }
         public List<OrderItem> OrderItems { get; set; }
     }
 

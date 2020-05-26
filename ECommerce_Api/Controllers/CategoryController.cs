@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using ECommerce_Api.DTOs;
 using ECommerce_Api.ExtensionMethod;
 using ECommerce_Api.Filters;
@@ -11,11 +7,13 @@ using ECommerce_Entity.Concrete.POCO;
 using ECommerce_Entity.Constant;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ECommerce_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CategoryController : ControllerBase
     {
@@ -41,7 +39,23 @@ namespace ECommerce_Api.Controllers
                 case ResultType.Error:
                     return BadRequest(result.Message);
             }
-            return BadRequest("null");
+            return NoContent();
+        }
+
+        [HttpGet("{masterId}")]
+        public async Task<IActionResult> GetMaster(int masterId)
+        {
+            var result = await categoryService.GetList(x=>x.MasterCategoryId==masterId);
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    return Ok(mapper.Map<IEnumerable<CategoryDto>>(result.Data));
+                case ResultType.Info:
+                    return BadRequest(result.Message);
+                case ResultType.Error:
+                    return BadRequest(result.Message);
+            }
+            return NoContent();
         }
 
         [HttpGet("{id}")]
@@ -57,10 +71,10 @@ namespace ECommerce_Api.Controllers
                 case ResultType.Error:
                     return BadRequest(result.Message);
             }
-            return null;
+            return NoContent();
         }
 
-
+       
         [ValidationFilter]
         [HttpPost]
         public async Task<IActionResult> Post(CategoryDto categoryDto,

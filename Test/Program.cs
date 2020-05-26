@@ -101,11 +101,11 @@ namespace Test
             // //p.Properties.Add(pp); 
             // #endregion
 
-            EfProductDal pDal = new EfProductDal(new ECommerceContext());
+            //EfProductDal pDal = new EfProductDal(new ECommerceContext());
 
-            var brands = new Brand[] { new Brand { Id = 1 }, new Brand { Id = 2 } };
-            var pp = new ProductProperty[] {new ProductProperty { Id = 5 } };
-            var products = pDal.GetListByListBrand(brands, pp);
+            //var brands = new Brand[] { new Brand { Id = 1 }, new Brand { Id = 2 } };
+            //var pp = new ProductProperty[] {new ProductProperty { Id = 5 } };
+            //var products = pDal.GetListByListBrand(brands, pp);
         }
     }
 

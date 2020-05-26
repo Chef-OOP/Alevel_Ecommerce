@@ -13,9 +13,9 @@ namespace ECommerce_Business.Abstarct
         
         Task<EntityResult<List<Product>>> GetListDeleted();
         Task<EntityResult<List<Product>>> GetListByCategory(int CategoryId);
-        Task<EntityResult<List<Product>>> GetListByListBrand(int[] BrandId);
+        Task<EntityResult<List<Product>>> GetBrand(int BrandId);
         Task<EntityResult<Product>> AddProduct(Product product);
-        EntityResult<List<Product>> GetListByListBrand(Brand[] brand, ProductProperty[] productProperty);
+        EntityResult<List<Product>> GetListByListBrand(int[] brand, int[] productProperty);
         Task<EntityResult<List<Product>>> GetBestSellingsByCount(int count);
         Task<EntityResult<List<Product>>> GetAdvicedsByCount(int count);
     }
