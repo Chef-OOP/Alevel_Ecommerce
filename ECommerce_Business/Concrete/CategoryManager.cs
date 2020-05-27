@@ -5,6 +5,7 @@ using ECommerce_Entity.Constant;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -55,8 +56,32 @@ namespace ECommerce_Business.Concrete
                 return new EntityResult<Category>(null, ResultType.Error, "Database hatası: " + ex.Message);
             }
         }
+        /// <summary>
+        /// Group özelliğine göre categorileri listeler
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<EntityResult<List<Category>>> GetCategoriesGroup(ProductPropertyGroup model)
+        {
+            try
+            {
+                var result =
+                    await categoryDal.GetCategoriesGroup(model);
+                if (result != null)
+                    return
+                        new EntityResult<List<Category>>(result);
+                return
+                    new EntityResult<List<Category>>(null, ResultType.Info, "Listelenemedi");
 
-        public async Task<EntityResult<List<Category>>> GetList(Expression<Func<Category,bool>> filter = null)
+            }
+            catch (Exception ex)
+            {
+                return
+                    new EntityResult<List<Category>>(null, ResultType.Error, "Database Hatası: " + ex.Message);
+            }
+        }
+
+        public async Task<EntityResult<List<Category>>> GetList(Expression<Func<Category, bool>> filter = null)
         {
             try
             {
@@ -75,9 +100,9 @@ namespace ECommerce_Business.Concrete
         {
             try
             {
-                var category = 
+                var category =
                     await categoryDal
-                    .GetAsync(x=>x.Name.ToLower() == model.Name.ToLower());
+                    .GetAsync(x => x.Name.ToLower() == model.Name.ToLower());
                 if (category != null)
                     return new EntityResult(ResultType.Info, $"{model.Name} isimli bir kategori zaten mevcut");
 
@@ -91,6 +116,6 @@ namespace ECommerce_Business.Concrete
             }
         }
 
-       
+
     }
 }

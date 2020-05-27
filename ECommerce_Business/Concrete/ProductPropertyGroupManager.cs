@@ -56,6 +56,25 @@ namespace ECommerce_Business.Concrete
             }
         }
 
+        public async Task<EntityResult<List<ProductPropertyGroup>>> GetGroupCategory(Category category)
+        {
+            try
+            {
+                var result =
+                    await groupDal.GetCategoriesGroup(category);
+                if (result != null)
+                    return
+                        new EntityResult<List<ProductPropertyGroup>>(result);
+                return
+                    new EntityResult<List<ProductPropertyGroup>>(null, ResultType.Info, "Lİstelenemedi");
+            }
+            catch (Exception ex)
+            {
+                return
+                    new EntityResult<List<ProductPropertyGroup>>(null, ResultType.Error, "Database Hatası: " + ex.Message);
+            }
+        }
+
         public async Task<EntityResult<List<ProductPropertyGroup>>> GetList(Expression<Func<ProductPropertyGroup, bool>> filter = null)
         {
             try
@@ -89,6 +108,5 @@ namespace ECommerce_Business.Concrete
             }
         }
 
-        
     }
 }

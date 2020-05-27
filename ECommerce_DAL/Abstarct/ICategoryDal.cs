@@ -10,6 +10,6 @@ namespace ECommerce_DAL.Abstarct
     public interface ICategoryDal
         : IRepository<Category>
     {
-        
+        Task<List<Category>> GetCategoriesGroup(ProductPropertyGroup model);
     }
 }

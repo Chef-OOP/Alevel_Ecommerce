@@ -35,6 +35,24 @@ namespace ECommerce_Business.Concrete
             }
         }
 
+        public EntityResult<List<Brand>> Brands(List<Product> products)
+        {
+            try
+            {
+                var result = brandDal.Brands(products);
+                if (result != null)
+                    return
+                        new EntityResult<List<Brand>>(result);
+                return
+                    new EntityResult<List<Brand>>(null, ResultType.Info, "Listelenme olmadı");
+            }
+            catch (Exception ex)
+            {
+                return
+                    new EntityResult<List<Brand>>(null, ResultType.Error, "Database hatası: "+ex.Message);
+            }
+
+        }
         public EntityResult Delete(Brand model)
         {
             try

@@ -45,8 +45,19 @@ namespace ECommerce_Business.Concrete
 
         public EntityResult Delete(ProductPropertyProduct model)
         {
-            //TODO : Doldur
-            throw new NotImplementedException();
+            try
+            {
+                var result = productPropertyProductsDal.Delete(model);
+                if (result > 0)
+                    return
+                        new EntityResult();
+                return new EntityResult(ResultType.Info, "Silme işlemi başarısız");
+            }
+            catch (Exception ex)
+            {
+                return
+                    new EntityResult(ResultType.Error, "Database hatası: " + ex.Message);
+            }
         }
 
         public Task<EntityResult<ProductPropertyProduct>> GetById(int id)
@@ -65,7 +76,7 @@ namespace ECommerce_Business.Concrete
                     return
                         new EntityResult<List<ProductPropertyProduct>>(result);
                 return
-                    new EntityResult<List<ProductPropertyProduct>>(null,ResultType.Info,"Lİsteleme işlemi başarısız");
+                    new EntityResult<List<ProductPropertyProduct>>(null, ResultType.Info, "Lİsteleme işlemi başarısız");
             }
             catch (Exception ex)
             {

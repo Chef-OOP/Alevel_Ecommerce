@@ -11,7 +11,15 @@ namespace Test
     {
         static void Main(string[] args)
         {
+            var people = Person.GetPepople();
+            var employee = Employee.GetEmployee();
 
+
+            var result = people.Select(x => x.EmployeeId);
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
             // Brand[] brands1 = new Brand[]//database
             // {
             //     new Brand(){ Id=1, Name="Arçelik"},
@@ -106,6 +114,46 @@ namespace Test
             //var brands = new Brand[] { new Brand { Id = 1 }, new Brand { Id = 2 } };
             //var pp = new ProductProperty[] {new ProductProperty { Id = 5 } };
             //var products = pDal.GetListByListBrand(brands, pp);
+        }
+    }
+
+    public class Person
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int EmployeeId { get; set; }
+        public static List<Person> GetPepople()
+        {
+            return new List<Person>()
+            {
+                new Person(){ Id=1, Name="Ali", EmployeeId=10 },
+                new Person(){ Id=2, Name="Veli", EmployeeId=10 },
+                new Person(){ Id=3, Name="Kazım", EmployeeId=10 },
+                new Person(){ Id=4, Name="Şakir", EmployeeId=10 },
+                new Person(){ Id=5, Name="Ayşe", EmployeeId=10 },
+                new Person(){ Id=6, Name="Fatma", EmployeeId=10 },
+                new Person(){ Id=7, Name="Hayriye", EmployeeId=10 },
+            };
+        }
+
+    }
+    public class Employee
+    {
+        public int Id { get; set; }
+        public string Dep { get; set; }
+
+        public static List<Employee> GetEmployee()
+        {
+            return new List<Employee>()
+            {
+                new Employee(){ Id=10,Dep="A" },
+                new Employee(){ Id=20,Dep="b" },
+                new Employee(){ Id=30,Dep="c" },
+                new Employee(){ Id=40,Dep="d" },
+                new Employee(){ Id=50,Dep="e" },
+                new Employee(){ Id=60,Dep="r" },
+                new Employee(){ Id=70,Dep="f" },
+            };
         }
     }
 

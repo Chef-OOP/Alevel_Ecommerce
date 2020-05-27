@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using AutoMapper;
 using ECommerce_Api.DTOs;
@@ -116,6 +117,29 @@ namespace ECommerce_Api.Controllers
                     return BadRequest(result.Message);
             }
         }
+
+        public async Task<IActionResult> GetGroupByCategory(Category category)
+        {
+            var result =
+                await productPropertyGroupService.GetGroupCategory(category);
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    return Ok(result.Data);
+                case ResultType.Info:
+                    return BadRequest(result.Message);
+                case ResultType.Error:
+                    return BadRequest(result.Message);
+                case ResultType.Notfound:
+                    return BadRequest(result.Message);
+                case ResultType.Warning:
+                    return BadRequest(result.Message);
+                default:
+                    return BadRequest(result.Message);
+            }
+        }
+
+
 
     }
 }

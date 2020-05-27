@@ -150,5 +150,30 @@ namespace ECommerce_Api.Controllers
             }
             return NoContent();
         }
+        /// <summary>
+        /// Group özlliklerine göre categorileri listeler
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> GetCategoriesGroup(ProductPropertyGroup model)
+        {
+            var result =
+                await categoryService.GetCategoriesGroup(model);
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    return Ok(result.Data);
+                case ResultType.Info:
+                    return BadRequest(result.Message);
+                case ResultType.Error:
+                    return BadRequest(result.Message);
+                case ResultType.Notfound:
+                    return BadRequest(result.Message);
+                case ResultType.Warning:
+                    return BadRequest(result.Message);
+                default:
+                    return BadRequest(result.Message);
+            }
+        }
     }
 }
