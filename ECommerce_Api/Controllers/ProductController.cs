@@ -23,7 +23,7 @@ namespace ECommerce_Api.Controllers
         private readonly IProductImageService productImageService;
         private readonly IMapper mapper;
         private readonly IProductPropertyProductsService productPropertyProductsService;
-
+        
         public ProductController(IProductService productService,
             IProductImageService productImageService,
             IMapper mapper,

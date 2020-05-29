@@ -9,10 +9,12 @@ using ECommerce_Business.Concrete;
 using ECommerce_DAL.Abstarct;
 using ECommerce_DAL.Concrete;
 using ECommerce_DAL.Concrete.Context;
+using ECommerce_Entity.Concrete.POCO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,7 +33,6 @@ namespace ECommerce_Api
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddCors(options =>
@@ -50,7 +51,33 @@ namespace ECommerce_Api
             });
             services.AddDbContext<ECommerceContext>();
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddIdentity<ApplicationUser, ApplicationRole>(opt=>
+            {
+                opt.Password.RequiredLength = 6;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                
+            }).AddEntityFrameworkStores<ECommerceContext>()
+              .AddDefaultTokenProviders();
+
+            
+            services.Configure<ApiBehaviorOptions>(opt =>
+            {
+                opt.SuppressModelStateInvalidFilter = true;
+
+            });
+
+            services.AddControllers(opt =>
+            {
+                opt.RespectBrowserAcceptHeader = true;
+            });
+
+
             #region IoC
+            services.AddScoped<ICustomerService, CustomerManager>();
+            services.AddScoped<ICustomerDal, EfCustomerDal>();
+
             services.AddScoped<IBrandService, BrandManager>();
             services.AddScoped<IBrandDal, EfBrandDal>();
 
@@ -83,21 +110,19 @@ namespace ECommerce_Api
 
             services.AddScoped<IProductPropertyProductsService, ProductPropertyProductsManager>();
             services.AddScoped<IProductPropertyProductsDal, EfProductPropertyProductsDal>();
+            
+            
+            services.AddScoped<IAddressService, AddressManager>();
+            services.AddScoped<IAddressDal, EfAddressDal>();
+            
+            
+            services.AddScoped<IInvoiceService, InvoiceManager>();
+            services.AddScoped<IInvoiceDal, EfInvoiceDal>();
+
 
             #endregion
-            services.Configure<ApiBehaviorOptions>(opt =>
-            {
-                opt.SuppressModelStateInvalidFilter = true; 
-
-            });
-
-            services.AddControllers(opt=>
-            {
-                opt.RespectBrowserAcceptHeader = true;
-            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -108,7 +133,7 @@ namespace ECommerce_Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

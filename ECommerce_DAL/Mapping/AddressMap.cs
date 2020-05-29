@@ -13,7 +13,6 @@ namespace ECommerce_DAL.Mapping
         public void Configure(EntityTypeBuilder<Address> builder)
         {
 
-            // TODO : Address order ilişkisi sıkıntılı
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.Title).HasMaxLength(50).IsRequired();
@@ -21,9 +20,17 @@ namespace ECommerce_DAL.Mapping
             builder.Property(x => x.District).HasMaxLength(30).IsRequired();
             builder.Property(x => x.Detail).HasMaxLength(200).IsRequired();
 
-            builder.HasOne(x => x.User)
-                .WithMany(x => x.Addresses)
-                .HasForeignKey(x => x.UserId);
+            builder.HasOne(x => x.Customer)
+                .WithMany(x => x.Address)
+                .HasForeignKey(x => x.CustomerId);
+
+            builder.HasOne(x => x.ApplicationUser)
+                .WithMany(x => x.Address)
+                .HasForeignKey(x => x.ApplicationUserId);
+
+            builder.HasMany(x => x.Orders)
+                .WithOne(x => x.Address)
+                .HasForeignKey(x => x.AddressId);
         }
     }
 }

@@ -14,14 +14,11 @@ namespace ECommerce_Entity.Concrete.POCO
         public string Surname { get; set; }
         public Gender Gender { get; set; }
         public string TCKN { get; set; }
-        public bool IsAnonymous { get; set; }
         public bool AllowEmail { get; set; }
         public bool AllowSms { get; set; }
         
-        public List<Address> Addresses { get; set; }
-        public List<Ticket> Tickets { get; set; }
-        public List<TicketResponse> TicketResponses { get; set; }
-        public List<Order> Orders { get; set; }
+        public ICollection<Address> Address { get; set; }
+        public ICollection<Customer> Customers { get; set; }
 
     }
 }

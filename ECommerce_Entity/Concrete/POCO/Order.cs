@@ -17,11 +17,14 @@ namespace ECommerce_Entity.Concrete.POCO
         public OrderStatus OrderStatus { get; set; }
         public PaymenStatus PaymenStatus { get; set; }
 
-        public int ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
+
         public int AddressId { get; set; }
         public Address Address { get; set; }
-        public List<OrderItem> OrderItems { get; set; }
+
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+        public virtual ICollection<Invoice> Invoices { get; set; }
     }
 
 

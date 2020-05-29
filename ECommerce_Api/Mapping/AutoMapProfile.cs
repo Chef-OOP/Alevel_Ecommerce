@@ -22,6 +22,13 @@ namespace ECommerce_Api.Mapping
 
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDto, Product>();
+
+            CreateMap<ApplicationUser, RegisterDto>();
+            CreateMap<RegisterDto, ApplicationUser>();
+
+
+            CreateMap<Address, AddressDto>();
+            CreateMap<AddressDto, Address>();
         }
     }
 }

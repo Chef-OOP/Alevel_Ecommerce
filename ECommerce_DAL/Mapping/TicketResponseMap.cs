@@ -17,9 +17,9 @@ namespace ECommerce_DAL.Mapping
             builder.Property(x => x.Content).IsRequired();
             builder.Property(x => x.Created).HasColumnType("datetime2").IsRequired();
 
-            builder.HasOne(x => x.Owner)
-                .WithMany(x => x.TicketResponses)
-                .HasForeignKey(x => x.OwnerId);
+            //builder.HasOne(x => x.Owner)
+            //    .WithMany(x => x.TicketResponses)
+            //    .HasForeignKey(x => x.OwnerId);
         }
     }
 }

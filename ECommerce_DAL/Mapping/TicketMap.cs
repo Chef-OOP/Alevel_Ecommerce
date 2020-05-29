@@ -22,9 +22,9 @@ namespace ECommerce_DAL.Mapping
                 .WithOne(x => x.Ticket)
                 .HasForeignKey(x => x.TicketId);
 
-            builder.HasOne(x => x.Owner)
-                .WithMany(x => x.Tickets)
-                .HasForeignKey(x => x.OwnerId);
+            //builder.HasOne(x => x.Owner)
+            //    .WithMany(x => x.Tickets)
+            //    .HasForeignKey(x => x.OwnerId);
                 
         }
     }

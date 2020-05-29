@@ -14,9 +14,9 @@ namespace ECommerce_DAL.Mapping
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseIdentityColumn();
 
-            builder.HasOne(x => x.Order)
-                .WithMany(x => x.OrderItems)
-                .HasForeignKey(x => x.OrderId);
+            //builder.HasOne(x => x.Order)
+            //    .WithMany(x => x.OrderItems)
+            //    .HasForeignKey(x => x.OrderId);
 
             builder.HasOne(x => x.Product)
                 .WithMany(x => x.OrderItems)

@@ -19,11 +19,8 @@ namespace ECommerce_DAL.Mapping
 
             builder.Property(x => x.TCKN).HasMaxLength(11);
 
-            builder.HasMany(x => x.Orders)
-                .WithOne(x => x.ApplicationUser)
-                .HasForeignKey(x => x.ApplicationUserId);
+            
 
-            // ilişkileri diğer maplerde kuruldu
 
         }
     }

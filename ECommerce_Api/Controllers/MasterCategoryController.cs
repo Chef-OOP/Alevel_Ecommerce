@@ -5,6 +5,7 @@ using ECommerce_Api.Filters;
 using ECommerce_Business.Abstarct;
 using ECommerce_Entity.Concrete.POCO;
 using ECommerce_Entity.Constant;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -34,6 +35,7 @@ namespace ECommerce_Api.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Get()
         {
             var result = await masterCategoryService.GetList();
