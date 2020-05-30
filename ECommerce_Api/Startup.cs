@@ -1,25 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using AutoMapper;
 using ECommerce_Business.Abstarct;
 using ECommerce_Business.Concrete;
 using ECommerce_DAL.Abstarct;
 using ECommerce_DAL.Concrete;
 using ECommerce_DAL.Concrete.Context;
-using ECommerce_Entity.Concrete.POCO;
+using ECommerce_JWT.Security;
+using ECommerce_JWT.Security.Encyrtion;
+using ECommerce_JWT.Security.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using tk=ECommerce_JWT.Security;
 
 namespace ECommerce_Api
 {
@@ -44,35 +42,49 @@ namespace ECommerce_Api
             //     .AllowCredentials()
             //     .Build());
             //});
-            services.Configure<FormOptions>(options =>
-            {
-                options.MultipartBodyLengthLimit = long.MaxValue;
-                options.BufferBody = true;
-            });
+
+            //services.Configure<FormOptions>(options =>
+            //{
+            //    options.MultipartBodyLengthLimit = long.MaxValue;
+            //    options.BufferBody = true;
+            //});
+
+
+            //services.AddIdentity<ApplicationUser, ApplicationRole>(opt =>
+            //{
+            //    opt.Password.RequireDigit = false;
+            //    opt.Password.RequiredLength = 6;
+            //    opt.Password.RequireLowercase = false;
+            //    opt.Password.RequireUppercase = false;
+
+            //}).AddEntityFrameworkStores<ECommerceContext>();
+
+
+            //services.Configure<ApiBehaviorOptions>(opt =>
+            //{
+            //    opt.SuppressModelStateInvalidFilter = true;
+
+            //});
+            var tokenOptions = Configuration.GetSection("TokenOptions").Get<tk.TokenOptions>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = tokenOptions.Issuer,
+                        ValidAudience = tokenOptions.Audience,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
             services.AddDbContext<ECommerceContext>();
             services.AddAutoMapper(typeof(Startup));
-
-            services.AddIdentity<ApplicationUser, ApplicationRole>(opt=>
-            {
-                opt.Password.RequiredLength = 6;
-                opt.Password.RequireLowercase = false;
-                opt.Password.RequireUppercase = false;
-                
-            }).AddEntityFrameworkStores<ECommerceContext>()
-              .AddDefaultTokenProviders();
-
-            
-            services.Configure<ApiBehaviorOptions>(opt =>
-            {
-                opt.SuppressModelStateInvalidFilter = true;
-
-            });
-
-            services.AddControllers(opt =>
-            {
-                opt.RespectBrowserAcceptHeader = true;
-            });
-
+            services.AddControllers();
 
             #region IoC
             services.AddScoped<ICustomerService, CustomerManager>();
@@ -118,6 +130,14 @@ namespace ECommerce_Api
             
             services.AddScoped<IInvoiceService, InvoiceManager>();
             services.AddScoped<IInvoiceDal, EfInvoiceDal>();
+
+            services.AddScoped<IAppUserService, AppUserManager>();
+            services.AddScoped<IAppUserDal, EfAppUserDal>();
+
+            services.AddScoped<IAuthService, AuthManager>();
+
+            services.AddScoped<ITokenHelper, JwtHelper>();
+
 
 
             #endregion

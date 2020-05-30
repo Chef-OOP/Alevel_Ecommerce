@@ -14,8 +14,8 @@ namespace ECommerce_Entity.Concrete.POCO
         public string LastName { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public int? ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public int? AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
         public virtual ICollection<Invoice> Invoices { get; set; }
         public virtual ICollection<Address> Address { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; set; }

@@ -27,7 +27,7 @@ namespace ECommerce_Business.Concrete
             try
             {
                 var result = await addressDal
-                    .GetAsync(x => x.ApplicationUserId == model.ApplicationUserId);
+                    .GetAsync(x => x.AppUserId == model.AppUserId);
                 if (result != null)
                     return
                         new EntityResult(ResultType.Info, "Bu Kullanıcıın Adress Bilgisi Mevcut");

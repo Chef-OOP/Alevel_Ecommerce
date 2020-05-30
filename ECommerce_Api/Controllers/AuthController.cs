@@ -10,6 +10,8 @@ using ECommerce_Api.Filters;
 using ECommerce_Business.Abstarct;
 using ECommerce_Entity.Concrete.POCO;
 using ECommerce_Entity.Constant;
+using ECommerce_Entity.DTOs;
+using ECommerce_JWT.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,51 +23,70 @@ namespace ECommerce_Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IMapper mapper;
         private readonly IAddressService addressService;
         private readonly IInvoiceService invoiceService;
         private readonly ICustomerService customerService;
         private readonly IProductService productService;
+        private readonly IAuthService authService;
 
         public AuthController(
-            UserManager<ApplicationUser> user,
-            SignInManager<ApplicationUser> signIn,
             IMapper mapper,
             IAddressService addressService,
             IInvoiceService invoiceService,
             ICustomerService customerService,
-            IProductService productService)
+            IProductService productService,
+            IAuthService authService)
         {
-            this.userManager = user;
-            this.signInManager = signIn;
+            //this.userManager = user;
+            //this.signInManager = signIn;
             this.mapper = mapper;
             this.addressService = addressService;
             this.invoiceService = invoiceService;
             this.customerService = customerService;
             this.productService = productService;
+            this.authService = authService;
         }
 
 
         [HttpPost]
         [ValidationFilter]
-        public async Task<IActionResult> Login(
-            [FromForm]LoginDto login, 
-            [FromForm]string returnUrl)
+        public IActionResult Login([FromForm] UserForLoginDto userForLoginDto)
         {
-            var user = await userManager.FindByEmailAsync(login.Email);
-            if (user != null)
+            EntityResult<AccessToken> accessToken = null;
+            var userResult = authService.Login(userForLoginDto);
+            switch (userResult.ResultType)
             {
-                await signInManager.SignOutAsync();
-                var result =
-                    await signInManager.PasswordSignInAsync(user.UserName, login.Password, false, false);
-                if (result.Succeeded)
-                {
-                    return Ok("Login Success"+" "+returnUrl?? "Cİhan");
-                }
+                case ResultType.Success:
+                    accessToken = authService.CreateAccessToken(userResult.Data);
+                    switch (accessToken.ResultType)
+                    {
+                        case ResultType.Success:
+                            return Ok(accessToken.Data);
+                        case ResultType.Info:
+                            break;
+                        case ResultType.Error:
+                            break;
+                        case ResultType.Notfound:
+                            break;
+                        case ResultType.Warning:
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case ResultType.Info:
+                    break;
+                case ResultType.Error:
+                    break;
+                case ResultType.Notfound:
+                    break;
+                case ResultType.Warning:
+                    break;
+                default:
+                    break;
             }
-            return BadRequest("Login Warning");
+            return BadRequest();
         }
 
 
@@ -76,7 +97,7 @@ namespace ECommerce_Api.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                Product product = (await productService.GetById(id)).Data;//BAK
+                Product product = (await productService.GetById(id)).Data;// TODO : BAK
 
             }
             return null;
@@ -88,45 +109,47 @@ namespace ECommerce_Api.Controllers
         [ValidationFilter]
         [HttpPost]
         public async Task<IActionResult> Register(
-            [FromForm] RegisterDto register,
+            [FromForm] UserForRegisterDto userForRegisterDto,
             [FromForm] AddressDto address)
         {
             var cookie = HttpContext.Request.Cookies["customerKey"];
             if (cookie == null)
             {
                 #region Normal Register İşlemi
-                //Identity Ekeleme Yapılıyor
-                var resultUser =
-                    await userManager.CreateAsync(mapper.Map<ApplicationUser>(register));
-                //User oluştururken hata alınırsa bura çalışıp kod yarıda kesilecek
-                //Beklenen Hata Database bağlantı hatası
-                if (resultUser.Errors.Count() < 0)
+                EntityResult<AppUser> resultUser = authService.Register(userForRegisterDto);
+                switch (resultUser.ResultType)
                 {
-                    string stringBuilder = "";
-                    foreach (var item in resultUser.Errors)
-                    {
-                        stringBuilder += item.Code + " " + item.Description + "  ";
-                    }
-                    return BadRequest(stringBuilder);
+                    case ResultType.Success:
+                        break;
+                    case ResultType.Info:
+                        return BadRequest(resultUser.Message);
+                    case ResultType.Error:
+                        return BadRequest(resultUser.Message);
+                    case ResultType.Notfound:
+                        return BadRequest(resultUser.Message);
+                    case ResultType.Warning:
+                        return BadRequest(resultUser.Message);
+                    default:
+                        return BadRequest(resultUser.Message);
                 }
                 #endregion
                 Customer customer = new Customer();
                 ////User Başarı ile oluşturulursa bu raya gelir
-                if (cookie == null && resultUser.Succeeded)
+                if (resultUser.Data != null)
                 {
-                    
+
                     //Eklenen User Databaseden çekliyor
-                    var u = await userManager.FindByEmailAsync(register.Email);
+                    AppUser u = resultUser.Data;
                     if (u != null)
                     {
                         //Register işlemi yapan her User aynı zamanda Customer dır.
-                        
+
                         customer.Key = Guid.NewGuid().ToString();
-                        customer.ApplicationUserId = u.Id;
+                        customer.AppUserId = u.Id;
                         customer.Email = u.Email;
-                        customer.LastName = u.Surname;
-                        customer.Name = u.Name;
-                        customer.Phone = u.PhoneNumber;
+                        customer.LastName = u.FirstName;
+                        customer.Name = u.LastName;
+                        //customer.Phone = u.PhoneNumber;
                         var resultCustomer =
                             await customerService.Add(customer);
                         //Customer Eklemsinden Doğacak hataların dönüşü buradan başalar
@@ -150,7 +173,7 @@ namespace ECommerce_Api.Controllers
                          * adress tablosuna User ve Customer Id olarak tanımlancak
                          **/
                         address.AddressKey = Guid.NewGuid();
-                        address.ApplicationUserId = u.Id;
+                        address.AppUserId = u.Id;
 
                         var resultCus = await customerService.Customer(customer.Key);
                         //Eklenen Customer tekrar çağrılıyor ve ve adress tablosuna ekleniyor
@@ -246,7 +269,8 @@ namespace ECommerce_Api.Controllers
             {
                 return BadRequest("Daha Kodlanmadı");
             }
-            
+
         }
+
     }
 }

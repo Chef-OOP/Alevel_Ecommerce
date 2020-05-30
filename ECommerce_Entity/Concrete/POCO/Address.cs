@@ -13,10 +13,10 @@ namespace ECommerce_Entity.Concrete.POCO
         public string Detail { get; set; }
         public string PostalCode { get; set; }
         public bool SameInvoice { get; set; }
-        public int CustomerId { get; set; }
+        public int? CustomerId { get; set; }
         public Customer Customer { get; set; }
-        public int ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public int? AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
         public ICollection<Order> Orders { get; set; }
         public ICollection<Invoice> Invoices { get; set; }
     }

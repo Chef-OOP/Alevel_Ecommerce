@@ -10,7 +10,7 @@ namespace ECommerce_Entity.Concrete.POCO
         public DateTime Created { get; set; }
         public string Content { get; set; }
         public int OwnerId { get; set; }
-        public ApplicationUser Owner { get; set; }
+        public AppUser Owner { get; set; }
         public int TicketId { get; set; }
         public Ticket Ticket { get; set; }
     }

@@ -37,6 +37,6 @@ namespace ECommerce_Api.DTOs
 
         public bool SameInvoice { get; set; }
         public int CustomerId { get; set; }
-        public int ApplicationUserId { get; set; }
+        public int AppUserId { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace ECommerce_Entity.Concrete.POCO
         public TicketStatus Status { get; set; }
         public List<TicketResponse> Responses { get; set; }
         public int OwnerId { get; set; }
-        public ApplicationUser Owner { get; set; }
+        public AppUser Owner { get; set; }
 
     }
 }

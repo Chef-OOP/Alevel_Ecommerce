@@ -12,8 +12,7 @@ using System.Text;
 
 namespace ECommerce_DAL.Concrete.Context
 {
-    public class ECommerceContext
-        : IdentityDbContext<ApplicationUser, ApplicationRole, int>
+    public class ECommerceContext : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -22,7 +21,7 @@ namespace ECommerce_DAL.Concrete.Context
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new AddressMap());
-            builder.ApplyConfiguration(new ApplicationUserMap());
+            //builder.ApplyConfiguration(new ApplicationUserMap());
             builder.ApplyConfiguration(new BrandMap());
             builder.ApplyConfiguration(new CampaignMap());
             builder.ApplyConfiguration(new CategoryMap());
@@ -36,20 +35,22 @@ namespace ECommerce_DAL.Concrete.Context
             builder.ApplyConfiguration(new SliderImageMap());
             builder.ApplyConfiguration(new SliderMap());
 
+            //builder.ApplyConfiguration(new TicketMap());
+            //builder.ApplyConfiguration(new TicketResponseMap());
+
+            builder.ApplyConfiguration(new UserOperationClaimsMap());
+            builder.ApplyConfiguration(new ProductCampaignMap());
+            builder.ApplyConfiguration(new ProductGroupCategoryMap());
+            builder.ApplyConfiguration(new ProductPropertyProductMap());
+
+            
             foreach (var foreignKey in builder.Model
-                .GetEntityTypes()
-                .SelectMany(x=>x.GetForeignKeys()))
+               .GetEntityTypes()
+               .SelectMany(x => x.GetForeignKeys()))
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
-            //builder.ApplyConfiguration(new TicketMap());
-            //builder.ApplyConfiguration(new TicketResponseMap());
-
-
-            builder.ApplyConfiguration(new ProductCampaignMap());
-            builder.ApplyConfiguration(new ProductGroupCategoryMap());
-            builder.ApplyConfiguration(new ProductPropertyProductMap());
             base.OnModelCreating(builder);
         }
         public DbSet<Address> Addresses { get; set; }
@@ -69,7 +70,9 @@ namespace ECommerce_DAL.Concrete.Context
         public DbSet<Invoice> Invoices { get; set; }
         //public DbSet<Ticket> Tickets { get; set; }
         //public DbSet<TicketResponse> TicketResponses { get; set; }
-
+        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<OperationClaims> OperationClaims { get; set; }
+        public DbSet<UserOperationClaims> UserOperationClaims { get; set; }
 
         public DbSet<ProductCampaign> ProductCampaigns { get; set; }
         public DbSet<ProductPropertyGroupCategory> ProductGroupCategories { get; set; }
@@ -131,6 +134,25 @@ namespace ECommerce_DAL.Concrete.Context
                 .HasOne(x => x.Product)
                 .WithMany(x => x.ProductCampaign)
                 .HasForeignKey(x => x.ProductId);
+        }
+    }
+    public class UserOperationClaimsMap
+        : IEntityTypeConfiguration<UserOperationClaims>
+    {
+        public void Configure(EntityTypeBuilder<UserOperationClaims> builder)
+        {
+            builder
+                 .HasKey(x => new { x.UserId, x.OperationClaimId });
+
+            builder
+                .HasOne(x => x.User)
+                .WithMany(x => x.UserOperationClaims)
+                .HasForeignKey(x => x.UserId);
+
+            builder
+                .HasOne(x => x.OperationClaims)
+                .WithMany(x => x.UserOperationClaims)
+                .HasForeignKey(x => x.OperationClaimId);
         }
     }
 }

@@ -48,9 +48,9 @@ namespace ECommerce_DAL.Concrete
         public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null)
         {
             if (filter == null)
-                return await Context.Set<TEntity>().ToListAsync();
+                return await Context.Set<TEntity>().AsQueryable().ToListAsync();
             else
-                return await Context.Set<TEntity>().Where(filter).ToListAsync();
+                return await Context.Set<TEntity>().AsQueryable().Where(filter).ToListAsync();
         }
         /// <summary>
         /// Database desilimsi gereken dosyaları siler

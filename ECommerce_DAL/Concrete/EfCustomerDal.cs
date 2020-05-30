@@ -1,6 +1,5 @@
 ﻿using ECommerce_DAL.Abstarct;
 using ECommerce_DAL.Concrete.Context;
-using ECommerce_DAL.Migrations;
 using ECommerce_Entity.Concrete.POCO;
 using Microsoft.EntityFrameworkCore;
 using System;
