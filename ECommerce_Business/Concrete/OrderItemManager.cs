@@ -82,7 +82,8 @@ namespace ECommerce_Business.Concrete
         {
             try
             {
-                if (orderItemDal.Update(model) > 0)
+                int result = orderItemDal.Update(model) ;
+                if (result==1)
                     return new EntityResult(ResultType.Success, "Güncelleme işlemi başarılı");
                 return new EntityResult(ResultType.Warning, "Güncelleme sırasında bir hata oluştu");
             }

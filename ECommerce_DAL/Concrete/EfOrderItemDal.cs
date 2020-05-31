@@ -9,9 +9,10 @@ namespace ECommerce_DAL.Concrete
 {
    public class EfOrderItemDal : EfEntityRepository<OrderItem,ECommerceContext>,IOrderItemDal
     {
+        ECommerceContext context;
         public EfOrderItemDal(ECommerceContext context) : base(context)
         {
-
+            this.context = context;
         }
     }
 }

@@ -88,7 +88,7 @@ namespace ECommerce_Api
             //services.AddSession();
             #region IoC
 
-            //services.AddScoped<ECommerceContext>();
+            services.AddScoped<ECommerceContext>();
 
             services.AddScoped<ICustomerService, CustomerManager>();
             services.AddScoped<ICustomerDal, EfCustomerDal>();

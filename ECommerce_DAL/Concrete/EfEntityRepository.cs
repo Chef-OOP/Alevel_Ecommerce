@@ -80,8 +80,12 @@ namespace ECommerce_DAL.Concrete
         /// <returns></returns>
         public int Update(TEntity entity)
         {
+            //Context.Set<TEntity>().Attach(entity);
+            //string a = Context.Entry(entity).State.ToString();
             Context.Entry(entity).State = EntityState.Modified;
             return Context.SaveChanges();
+
+            //Context.Set<TEntity>().AddOrUpdate()
         }
 
 

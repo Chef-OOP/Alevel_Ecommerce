@@ -76,54 +76,77 @@ namespace ECommerce_Api.Controllers
         {
             EntityResult<AccessToken> accessToken = null;
 
-            var userResult = authService.Login(userForLoginDto);
-            switch (userResult.ResultType)
+            if (userForLoginDto.CustomerId == 0)
             {
-                case ResultType.Success:
-                    accessToken = authService.CreateAccessToken(userResult.Data);
-                    switch (accessToken.ResultType)
-                    {
-                        case ResultType.Success:
-                            var customerResult =
-                                await (customerService.GetByUserId(userResult.Data.Id));
-                            switch (customerResult.ResultType)
-                            {
-                                case ResultType.Success:
-                                    accessToken.Data.CustomerId = customerResult.Data.Id;
-                                    break;
-                                case ResultType.Info:
-                                    return BadRequest(customerResult.Message);
-                                case ResultType.Error:
-                                    return BadRequest(customerResult.Message);
-                                case ResultType.Notfound:
-                                    return BadRequest(customerResult.Message);
-                                case ResultType.Warning:
-                                    return BadRequest(customerResult.Message);
-                                default:
-                                    return BadRequest(customerResult.Message);
-                            }
-                            return Ok(accessToken.Data);
-                        case ResultType.Info:
-                            return BadRequest(accessToken.Message);
-                        case ResultType.Error:
-                            return BadRequest(accessToken.Message);
-                        case ResultType.Notfound:
-                            return BadRequest(accessToken.Message);
-                        case ResultType.Warning:
-                            return BadRequest(accessToken.Message);
-                        default:
-                            return BadRequest(accessToken.Message);
-                    }
-                case ResultType.Info:
-                    return BadRequest(userResult.Message);
-                case ResultType.Error:
-                    return BadRequest(userResult.Message);
-                case ResultType.Notfound:
-                    return BadRequest(userResult.Message);
-                case ResultType.Warning:
-                    return BadRequest(userResult.Message);
-                default:
-                    return BadRequest(userResult.Message);
+                var userResult = authService.Login(userForLoginDto);
+                switch (userResult.ResultType)
+                {
+                    case ResultType.Success:
+                        accessToken = authService.CreateAccessToken(userResult.Data);
+                        switch (accessToken.ResultType)
+                        {
+                            case ResultType.Success:
+                                var customerResult =
+                                    await (customerService.GetByUserId(userResult.Data.Id));
+                                switch (customerResult.ResultType)
+                                {
+                                    case ResultType.Success:
+                                        accessToken.Data.CustomerId = customerResult.Data.Id;
+                                        break;
+                                    case ResultType.Info:
+                                        return BadRequest(customerResult.Message);
+                                    case ResultType.Error:
+                                        return BadRequest(customerResult.Message);
+                                    case ResultType.Notfound:
+                                        return BadRequest(customerResult.Message);
+                                    case ResultType.Warning:
+                                        return BadRequest(customerResult.Message);
+                                    default:
+                                        return BadRequest(customerResult.Message);
+                                }
+                                return Ok(accessToken.Data);
+                            case ResultType.Info:
+                                return BadRequest(accessToken.Message);
+                            case ResultType.Error:
+                                return BadRequest(accessToken.Message);
+                            case ResultType.Notfound:
+                                return BadRequest(accessToken.Message);
+                            case ResultType.Warning:
+                                return BadRequest(accessToken.Message);
+                            default:
+                                return BadRequest(accessToken.Message);
+                        }
+                    case ResultType.Info:
+                        return BadRequest(userResult.Message);
+                    case ResultType.Error:
+                        return BadRequest(userResult.Message);
+                    case ResultType.Notfound:
+                        return BadRequest(userResult.Message);
+                    case ResultType.Warning:
+                        return BadRequest(userResult.Message);
+                    default:
+                        return BadRequest(userResult.Message);
+                }
+            }
+            else
+            {
+                var items =
+                    (await orderItemService.GetList(x => x.CustomerId == userForLoginDto.CustomerId)).Data;
+                var userResult = authService.Login(userForLoginDto);
+                var customerID = (await customerService.GetByUserId(userResult.Data.Id)).Data.Id;
+                foreach (var item in items)
+                {
+                    item.CustomerId = customerID;
+                    orderItemService.Update(item);
+                }
+
+                accessToken = (authService.CreateAccessToken(userResult.Data));
+               
+                
+               
+                accessToken.Data.CustomerId = customerID;
+
+                return Ok(accessToken.Data);
             }
 
         }
