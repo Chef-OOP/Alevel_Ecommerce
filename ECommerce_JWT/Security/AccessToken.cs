@@ -11,5 +11,6 @@ namespace ECommerce_JWT.Security
         public string Token { get; set; }
         public DateTime Expiration { get; set; }
         public string RefreshToken { get; set; }
+        public int CustomerId { get; set; }
     }
 }

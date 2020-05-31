@@ -1,25 +1,43 @@
-﻿using ECommerce_DAL.Concrete;
+﻿using ECommerce_Business.Concrete;
+using ECommerce_DAL.Concrete;
 using ECommerce_DAL.Concrete.Context;
 using ECommerce_Entity.Concrete.POCO;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Test
 {
+    public class Customer
+    {
+        public int Id { get; set; }
+        public int Key { get; set; }
+
+    }
     class Program
     {
         static void Main(string[] args)
         {
-            var people = Person.GetPepople();
-            var employee = Employee.GetEmployee();
 
-
-            var result = people.Select(x => x.EmployeeId);
-            foreach (var item in result)
+            List<Customer> people1 = new List<Customer>()
             {
-                Console.WriteLine(item);
-            }
+                new Customer(){ Id=1, Key=1 },
+                new Customer(){ Id=1, Key=2 },
+                new Customer(){ Id=1, Key=3 },
+                new Customer(){ Id=2, Key=1 }
+            };
+            
+            
+            
+            
+            
+            //var people = Person.GetPepople();
+            //var employee = Employee.GetEmployee();
+
+
+            //var result = people.Select(x => x.EmployeeId);
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
             // Brand[] brands1 = new Brand[]//database
             // {
             //     new Brand(){ Id=1, Name="Arçelik"},

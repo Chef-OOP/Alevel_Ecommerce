@@ -38,6 +38,7 @@ namespace ECommerce_Api.Controllers
         [Authorize]
         public async Task<IActionResult> Get()
         {
+            var a=HttpContext.Request.Headers;
             var result = await masterCategoryService.GetList();
             switch (result.ResultType)
             {

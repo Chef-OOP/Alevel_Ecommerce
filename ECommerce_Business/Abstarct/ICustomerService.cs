@@ -12,5 +12,6 @@ namespace ECommerce_Business.Abstarct
         : IGenericService<Customer>
     {
         Task<EntityResult<Customer>> Customer(string Key);
+        Task<EntityResult<Customer>> GetByUserId(int id);
     }
 }

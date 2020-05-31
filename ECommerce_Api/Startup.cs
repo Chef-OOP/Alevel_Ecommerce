@@ -85,8 +85,11 @@ namespace ECommerce_Api
             services.AddDbContext<ECommerceContext>();
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
-
+            //services.AddSession();
             #region IoC
+
+            //services.AddScoped<ECommerceContext>();
+
             services.AddScoped<ICustomerService, CustomerManager>();
             services.AddScoped<ICustomerDal, EfCustomerDal>();
 
@@ -149,12 +152,17 @@ namespace ECommerce_Api
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseStaticFiles();
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            //app.UseSession(new SessionOptions()
+            //{
+            //      IdleTimeout=TimeSpan.FromMinutes(10),
+            //       IOTimeout=TimeSpan.FromMinutes(10)
+            //});
 
             app.UseEndpoints(endpoints =>
             {

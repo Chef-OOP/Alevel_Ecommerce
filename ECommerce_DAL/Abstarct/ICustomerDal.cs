@@ -11,5 +11,6 @@ namespace ECommerce_DAL.Abstarct
         : IRepository<Customer>
     {
         Task<Customer> Customer(string Key);
+        Task<Customer> GetByUserId(int id);
     }
 }

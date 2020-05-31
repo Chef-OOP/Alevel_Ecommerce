@@ -64,10 +64,40 @@ namespace ECommerce_Business.Concrete
             throw new NotImplementedException();
         }
 
-        public Task<EntityResult<Customer>> GetById(int id)
+        public async Task<EntityResult<Customer>> GetById(int id)
         {
-            //TODO Doldur
-            throw new NotImplementedException();
+            try
+            {
+                var result = await customerDal.GetAsync(x => x.Id == id);
+                if (result != null)
+                    return
+                        new EntityResult<Customer>(result);
+                return
+                    new EntityResult<Customer>(null, ResultType.Notfound, "Müşteri bulunamadı");
+            }
+            catch (Exception ex)
+            {
+                return
+                    new EntityResult<Customer>(null, ResultType.Error, "Database Hatası: " + ex.Message);
+            }
+        }
+
+        public async Task<EntityResult<Customer>> GetByUserId(int id)
+        {
+            try
+            {
+                Customer customer = await customerDal.GetByUserId(id);
+                if (customer != null)
+                    return
+                        new EntityResult<Customer>(customer);
+                return
+                    new EntityResult<Customer>(null, ResultType.Notfound, "Customer Bulunamadı");
+            }
+            catch (Exception ex)
+            {
+                return
+                    new EntityResult<Customer>(null, ResultType.Error, "Database Hatası: " + ex.Message);
+            }
         }
 
         public Task<EntityResult<List<Customer>>> GetList(Expression<Func<Customer, bool>> filter = null)

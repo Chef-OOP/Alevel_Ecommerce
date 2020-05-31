@@ -12,7 +12,8 @@ using System.Text;
 
 namespace ECommerce_DAL.Concrete.Context
 {
-    public class ECommerceContext : DbContext
+    public interface IECommerceContext { }
+    public class ECommerceContext : DbContext, IECommerceContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

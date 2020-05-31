@@ -87,14 +87,14 @@ namespace ECommerce_Business.Concrete
                     LastName = userForRegisterDto.LastName,
                     PasswordHash = passwordHash,
                     PasswordSalt = passwordSalt,
-                    Status = false//TODO : doğrulama mailinden sonra ture olacak
+                    AllowSms = userForRegisterDto.AllowSms,
+                    AllowEmail = userForRegisterDto.AllowEmail,
+                    TCKN = userForRegisterDto.TCKN?? null
 
-                    //TODO:BaseModel Oluşturulacak
                 };
                 userService.Add(user);
-                AppUser u =userService.GetByEmail(userForRegisterDto.Email).Data;
+                AppUser u = userService.GetByEmail(userForRegisterDto.Email).Data;
                 result = new EntityResult<AppUser>(u);
-                //TODO : Email Controlu Bu Noktada Yapılcak 
             }
             else
             {
