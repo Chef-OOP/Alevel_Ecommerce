@@ -35,7 +35,7 @@ namespace ECommerce_Api.Controllers
 
 
         [HttpGet]
-        [Authorize]
+       // [Authorize]
         public async Task<IActionResult> Get()
         {
             var a=HttpContext.Request.Headers;

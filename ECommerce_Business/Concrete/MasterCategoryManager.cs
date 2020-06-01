@@ -60,7 +60,7 @@ namespace ECommerce_Business.Concrete
         {
             try
             {
-                var masterCategories = await masterCategoryDal.GetAllAsync(filter);
+                var masterCategories = await masterCategoryDal.GetAllAsync(filter,"Categories");
                 if (masterCategories.Count > 0)
                     return new EntityResult<List<MasterCategory>>(masterCategories, ResultType.Success);
                 return new EntityResult<List<MasterCategory>>(masterCategories, ResultType.Info, "Üst kategori bulunamadı");

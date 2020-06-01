@@ -45,12 +45,23 @@ namespace ECommerce_DAL.Concrete
         /// </summary>
         /// <param name="filter"></param>
         /// <returns></returns>
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null)
+        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> filter = null,params string[] includeItems)
         {
+            IQueryable<TEntity> result = null;
             if (filter == null)
-                return await Context.Set<TEntity>().AsQueryable().ToListAsync();
+                result = Context.Set<TEntity>().AsQueryable();
             else
-                return await Context.Set<TEntity>().AsQueryable().Where(filter).ToListAsync();
+                result = Context.Set<TEntity>().AsQueryable().Where(filter);
+
+            if (includeItems!=null)
+            {
+                foreach (var item in includeItems)
+                {
+                    result = result.Include(item);
+                }
+            }
+
+            return await result.ToListAsync();
         }
         /// <summary>
         /// Database desilimsi gereken dosyaları siler
