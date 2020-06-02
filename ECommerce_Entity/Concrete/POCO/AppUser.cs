@@ -16,8 +16,9 @@ namespace ECommerce_Entity.Concrete.POCO
         public bool AllowSms { get; set; }
         public bool AllowEmail { get; set; }
         public string Profession { get; set; }
+        public string CellPhone { get; set; }
 
-        public string RefreshToken { get; set; }
+        public string RefreshToken { get; set; }//TODO : CreateToken() içine yok UNUTMA
         public DateTime? RefreshTokenEndDate { get; set; }
 
         public virtual ICollection<Address> Address { get; set; }

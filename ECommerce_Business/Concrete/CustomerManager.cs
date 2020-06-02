@@ -98,6 +98,7 @@ namespace ECommerce_Business.Concrete
                 return
                     new EntityResult<Customer>(null, ResultType.Error, "Database Hatası: " + ex.Message);
             }
+           
         }
 
         public Task<EntityResult<List<Customer>>> GetList(Expression<Func<Customer, bool>> filter = null)
@@ -106,10 +107,21 @@ namespace ECommerce_Business.Concrete
             throw new NotImplementedException();
         }
 
-        public Task<EntityResult> Update(Customer model)
+        public async Task<EntityResult> Update(Customer model)
         {
-            //TODO Doldur
-            throw new NotImplementedException();
+            try
+            {
+                if (customerDal.Update(model) > 0)
+                    return
+                        new EntityResult();
+                return
+                    new EntityResult(ResultType.Info, "Güncelleme Başarısız");
+            }
+            catch (Exception ex )
+            {
+                return 
+                    new EntityResult(ResultType.Error,"Database Hatası : "+ex.Message);
+            }
         }
     }
 }

@@ -6,14 +6,10 @@ using ECommerce_Entity.Concrete.POCO;
 using ECommerce_Entity.Constant;
 using ECommerce_Entity.DTOs;
 using ECommerce_JWT.Security;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MoreLinq.Experimental;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ECommerce_Api.Controllers
@@ -141,9 +137,9 @@ namespace ECommerce_Api.Controllers
                 }
 
                 accessToken = (authService.CreateAccessToken(userResult.Data));
-               
-                
-               
+
+
+
                 accessToken.Data.CustomerId = customerID;
 
                 return Ok(accessToken.Data);
@@ -163,7 +159,6 @@ namespace ECommerce_Api.Controllers
                 customer.Key = key;
                 await customerService.Add(customer);
                 customerData = (await customerService.Customer(key)).Data;
-
             }
             else
             {
@@ -217,28 +212,30 @@ namespace ECommerce_Api.Controllers
             [FromForm] UserForRegisterDto userForRegisterDto,
             [FromForm] AddressDto address)
         {
-            var cookie = HttpContext.Request.Cookies["customerKey"];
+            Dictionary<string, object> json = new Dictionary<string, object>();
 
-            if (cookie == null)
+            #region Normal Register İşlemi
+            EntityResult<AppUser> resultUser = authService.Register(userForRegisterDto);
+            switch (resultUser.ResultType)
             {
-                #region Normal Register İşlemi
-                EntityResult<AppUser> resultUser = authService.Register(userForRegisterDto);
-                switch (resultUser.ResultType)
-                {
-                    case ResultType.Success:
-                        break;
-                    case ResultType.Info:
-                        return BadRequest(resultUser.Message);
-                    case ResultType.Error:
-                        return BadRequest(resultUser.Message);
-                    case ResultType.Notfound:
-                        return BadRequest(resultUser.Message);
-                    case ResultType.Warning:
-                        return BadRequest(resultUser.Message);
-                    default:
-                        return BadRequest(resultUser.Message);
-                }
-                #endregion
+                case ResultType.Success:
+                    break;
+                case ResultType.Info:
+                    return BadRequest(resultUser.Message);
+                case ResultType.Error:
+                    return BadRequest(resultUser.Message);
+                case ResultType.Notfound:
+                    return BadRequest(resultUser.Message);
+                case ResultType.Warning:
+                    return BadRequest(resultUser.Message);
+                default:
+                    return BadRequest(resultUser.Message);
+            }
+            #endregion
+
+            if (userForRegisterDto.CustomerId == 0)
+            {
+
                 Customer customer = new Customer();
                 ////User Başarı ile oluşturulursa bu raya gelir
                 if (resultUser.Data != null)
@@ -246,19 +243,19 @@ namespace ECommerce_Api.Controllers
 
                     //Eklenen User Databaseden çekliyor
                     AppUser u = resultUser.Data;
+                    json.Add("userId", u.Id);
                     if (u != null)
                     {
                         //Register işlemi yapan her User aynı zamanda Customer dır.
-
                         customer.Key = Guid.NewGuid().ToString();
                         customer.AppUserId = u.Id;
                         customer.Email = u.Email;
-                        customer.LastName = u.FirstName;
-                        customer.Name = u.LastName;
-                        //customer.Phone = u.PhoneNumber;
+                        customer.FirstName = u.FirstName;
+                        customer.LastName = u.LastName;
+                        customer.CellPhone = u.CellPhone;
                         var resultCustomer =
                             await customerService.Add(customer);
-                        //Customer Eklemsinden Doğacak hataların dönüşü buradan başalar
+                        //Customer Eklenmesinden Doğacak hataların dönüşü buradan başalar
                         switch (resultCustomer.ResultType)
                         {
                             case ResultType.Success:
@@ -287,6 +284,7 @@ namespace ECommerce_Api.Controllers
                         {
                             case ResultType.Success:
                                 address.CustomerId = resultCus.Data.Id;
+                                json.Add("customerId", resultCus.Data.Id);
                                 break;
                             case ResultType.Info:
                                 return BadRequest(resultCus.Message);
@@ -320,7 +318,7 @@ namespace ECommerce_Api.Controllers
 
                         /*Register sırasında User adres bilgilerinin fatura adresi olmasını 
                          * isterse bu kod çalışsın
-                         * Eğer istemezse satın alma isşeminde fatura bilgisi tekrar istencek
+                         * Eğer istemezse satın alma işleminde fatura bilgisi tekrar istencek
                          */
                         if (address.SameInvoice)
                         {
@@ -355,48 +353,26 @@ namespace ECommerce_Api.Controllers
 
                 }
 
-                HttpContext
-                    .Response
-                    .Cookies
-                    .Append("customerKey", customer.Key);
-                Dictionary<string, object> json = new Dictionary<string, object>();
                 json.Add("Success", "Başarılı");
                 return Ok(json);
             }
-            else if (cookie != null)
+            else if (userForRegisterDto.CustomerId > 0)
             {
-                #region alışverişten Sepetten Yönlendirilen Register işlemi
-                EntityResult<AppUser> resultUser = authService.Register(userForRegisterDto);
-                switch (resultUser.ResultType)
-                {
-                    case ResultType.Success:
-                        break;
-                    case ResultType.Info:
-                        return BadRequest(resultUser.Message);
-                    case ResultType.Error:
-                        return BadRequest(resultUser.Message);
-                    case ResultType.Notfound:
-                        return BadRequest(resultUser.Message);
-                    case ResultType.Warning:
-                        return BadRequest(resultUser.Message);
-                    default:
-                        return BadRequest(resultUser.Message);
-                }
-                #endregion
-
-                var customer = (await customerService.Customer(cookie)).Data;
+                var customer = (await customerService.GetById(userForRegisterDto.CustomerId)).Data;
 
                 if (resultUser.Data != null)
                 {
 
                     AppUser u = resultUser.Data;
+                    json.Add("userId", u.Id);
                     if (u != null)
                     {
 
                         customer.AppUserId = u.Id;
                         customer.Email = u.Email;
+                        customer.FirstName = u.FirstName;
                         customer.LastName = u.LastName;
-                        customer.Name = u.FirstName;
+                        customer.CellPhone = u.CellPhone;
 
                         var resultCustomer =
                             await customerService.Update(customer);
@@ -482,8 +458,10 @@ namespace ECommerce_Api.Controllers
                         }
                     }
                 }
-                Dictionary<string, object> json = new Dictionary<string, object>();
+
                 json.Add("Success", "Başarılı");
+                json.Add("customerId", userForRegisterDto.CustomerId);
+
                 return Ok(json);
             }
             else

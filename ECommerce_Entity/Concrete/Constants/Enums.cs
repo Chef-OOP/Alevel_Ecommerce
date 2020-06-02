@@ -23,4 +23,10 @@ namespace ECommerce_Entity.Concrete.Constants
         CreditCard, Coupon
     }
 
+    public enum InvoiceType
+    {
+        Individual,
+        Corporate
+    }
+
 }

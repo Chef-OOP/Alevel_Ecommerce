@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ECommerce_Entity.Concrete.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,5 +25,7 @@ namespace ECommerce_Entity.Concrete.POCO
 
         public int OrderId { get; set; }
         public Order Order { get; set; }
+
+        public InvoiceType InvoiceType { get; set; }
     }
 }

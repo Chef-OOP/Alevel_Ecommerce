@@ -28,5 +28,9 @@ namespace ECommerce_Entity.DTOs
         public string TCKN { get; set; }
         public bool AllowEmail { get; set; } = false;
         public bool AllowSms { get; set; } = false;
+        [Required(ErrorMessage ="Telefon Alanı Zorunldur")]
+        //[Phone]
+        public string CellPhone { get; set; }
+        public int CustomerId { get; set; } = 0;
     }
 }
