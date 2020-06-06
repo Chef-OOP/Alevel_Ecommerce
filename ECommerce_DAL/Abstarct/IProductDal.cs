@@ -17,8 +17,8 @@ namespace ECommerce_DAL.Abstarct
 
         Task<List<Product>> GetAdvicedsByCount(int count);
         Task<Product> AddProduct(Product product);
-       
+        Task<List<Product>> GetNewProductsByCount(int count);
 
-
+        Task<List<Product>> GetListBySearch(string searchString, int categoryId = 0);
     }
 }

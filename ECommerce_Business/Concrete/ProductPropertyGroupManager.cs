@@ -79,7 +79,7 @@ namespace ECommerce_Business.Concrete
         {
             try
             {
-                var propertyGroups = await groupDal.GetAllAsync(filter);
+                var propertyGroups = await groupDal.GetAllAsync(filter,"Properties");
                 if (propertyGroups.Count > 0)
                     return new EntityResult<List<ProductPropertyGroup>>(propertyGroups, ResultType.Success);
                 return new EntityResult<List<ProductPropertyGroup>>(propertyGroups, ResultType.Info, "Hiç özellik grubu bulunamadı");

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using AutoMapper;
 using ECommerce_Api.DTOs;
+using ECommerce_Api.DTOs.CategoryDTOs;
 using ECommerce_Api.Filters;
 using ECommerce_Business.Abstarct;
 using ECommerce_Entity.Concrete.POCO;
@@ -15,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ProductPropertyGroupController : ControllerBase
     {
@@ -33,12 +34,12 @@ namespace ECommerce_Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = 
+            var result =
                 await productPropertyGroupService.GetList();
             switch (result.ResultType)
             {
                 case ResultType.Success:
-                    return Ok(mapper.Map<ProductPropertyGroupDto>(result.Data));
+                    return Ok(mapper.Map<IEnumerable<ProductPropertyGroupDto>>(result.Data));
                 case ResultType.Info:
                     return BadRequest(result.Message);
                 case ResultType.Error:
@@ -118,14 +119,17 @@ namespace ECommerce_Api.Controllers
             }
         }
 
-        public async Task<IActionResult> GetGroupByCategory(Category category)
+
+        [HttpPost]
+        public async Task<IActionResult> GetGroupByCategory(CategoryMenuDto category)
         {
             var result =
-                await productPropertyGroupService.GetGroupCategory(category);
+                await productPropertyGroupService.GetGroupCategory(mapper.Map<Category>(category));
             switch (result.ResultType)
             {
                 case ResultType.Success:
-                    return Ok(result.Data);
+                    var dtos = mapper.Map<IEnumerable<ProductPropertyGroupDto>>(result.Data);
+                    return Ok(dtos);
                 case ResultType.Info:
                     return BadRequest(result.Message);
                 case ResultType.Error:

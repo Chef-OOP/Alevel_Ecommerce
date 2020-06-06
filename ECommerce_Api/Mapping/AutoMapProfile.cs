@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using ECommerce_Api.DTOs;
+using ECommerce_Api.DTOs.BasketDTOs;
+using ECommerce_Api.DTOs.CategoryDTOs;
+using ECommerce_Api.DTOs.MasterCategoryDTOs;
 using ECommerce_Entity.Concrete.POCO;
 using System;
 using System.Collections.Generic;
@@ -14,14 +17,31 @@ namespace ECommerce_Api.Mapping
     {
         public AutoMapProfile()
         {
+            // Master Category
             CreateMap<MasterCategory, MasterCategoryDto>();
             CreateMap<MasterCategoryDto, MasterCategory>();
+            CreateMap<MasterCategory, MasterCategoryMenuDto>();
+            CreateMap<MasterCategoryMenuDto, MasterCategory>();
 
             CreateMap<Category, CategoryDto>();
             CreateMap<CategoryDto, Category>();
+            CreateMap<Category, CategoryMenuDto>();
+            CreateMap<CategoryMenuDto, Category>();
+
+            CreateMap<Brand, BrandDto>();
+            CreateMap<BrandDto, Brand>();
+
+            CreateMap<ProductPropertyDto, ProductProperty>();
+            CreateMap<ProductProperty, ProductPropertyDto>();
+
+            CreateMap<ProductPropertyGroupDto, ProductPropertyGroup>();
+            CreateMap<ProductPropertyGroup, ProductPropertyGroupDto>();
 
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDto, Product>();
+
+            CreateMap<OrderItem, BasketItemDto>().ForMember(x=>x.SubTotal,y=>y.MapFrom(z=>z.Quantity*z.Product.DiscountedPrice));
+            CreateMap<BasketItemDto, OrderItem>();
 
             //CreateMap<ApplicationUser, RegisterDto>();
             //CreateMap<RegisterDto, ApplicationUser>();

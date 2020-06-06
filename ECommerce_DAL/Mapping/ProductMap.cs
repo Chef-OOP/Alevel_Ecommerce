@@ -17,6 +17,8 @@ namespace ECommerce_DAL.Mapping
             builder.Property(x => x.Name).HasMaxLength(200).IsRequired();
             builder.Property(x => x.Description).HasColumnType("ntext");
 
+            builder.Property(x => x.MainImage).HasMaxLength(150);
+
 
             builder.HasMany(x => x.Images)
                 .WithOne(x => x.Product)

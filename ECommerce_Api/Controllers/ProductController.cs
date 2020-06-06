@@ -12,6 +12,7 @@ using ECommerce_Entity.Constant;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using MoreLinq.Extensions;
 
 namespace ECommerce_Api.Controllers
 {
@@ -162,14 +163,14 @@ namespace ECommerce_Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAdvices([FromQuery] int count)
+        public async Task<IActionResult> GetAdviceds(int count)
         {
             var result =
                 await productService.GetAdvicedsByCount(count);
             switch (result.ResultType)
             {
                 case ResultType.Success:
-                    return Ok(result.Data);
+                    return Ok(mapper.Map<IEnumerable<ProductDto>>(result.Data));
                 case ResultType.Info:
                     return BadRequest(result.Message);
                 case ResultType.Error:
@@ -182,7 +183,7 @@ namespace ECommerce_Api.Controllers
             return NoContent();
         }
 
-        [HttpGet("count")]
+        [HttpGet]
         public async Task<IActionResult> GetBestSellings(int count)
         {
             var result =
@@ -190,7 +191,7 @@ namespace ECommerce_Api.Controllers
             switch (result.ResultType)
             {
                 case ResultType.Success:
-                    return Ok(result.Data);
+                    return Ok(mapper.Map<IEnumerable<ProductDto>>(result.Data));
                 case ResultType.Info:
                     return BadRequest(result.Message);
                 case ResultType.Error:
@@ -203,7 +204,7 @@ namespace ECommerce_Api.Controllers
             return NoContent();
         }
 
-        [HttpGet("BrandId")]
+        [HttpGet]
         public async Task<IActionResult> GetBrand(int BrandId)
         {
             var result =
@@ -211,7 +212,7 @@ namespace ECommerce_Api.Controllers
             switch (result.ResultType)
             {
                 case ResultType.Success:
-                    return Ok(result.Data);
+                    return Ok(mapper.Map<IEnumerable<ProductDto>>(result.Data));
                 case ResultType.Info:
                     return BadRequest(result.Message);
                 case ResultType.Error:
@@ -249,6 +250,48 @@ namespace ECommerce_Api.Controllers
         {
             var result =
                  await productService.GetListDeleted();
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    return Ok(result.Data);
+                case ResultType.Info:
+                    return BadRequest(result.Message);
+                case ResultType.Error:
+                    return BadRequest(result.Message);
+                case ResultType.Notfound:
+                    return BadRequest(result.Message);
+                case ResultType.Warning:
+                    return BadRequest(result.Message);
+            }
+            return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetNewProducts(int count)
+        {
+            var result = await productService.GetNewProductsByCount(count);
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    return Ok(mapper.Map<IEnumerable<ProductDto>>(result.Data));
+                case ResultType.Info:
+                    return BadRequest(result.Message);
+                case ResultType.Error:
+                    return BadRequest(result.Message);
+                case ResultType.Notfound:
+                    return BadRequest(result.Message);
+                case ResultType.Warning:
+                    return BadRequest(result.Message);
+            }
+            return NoContent();
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetListBySearch(string searchString,int categoryId)
+        {
+            var result =
+                 await productService.GetListBySearch(searchString,categoryId);
             switch (result.ResultType)
             {
                 case ResultType.Success:

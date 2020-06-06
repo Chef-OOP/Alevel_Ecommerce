@@ -241,7 +241,30 @@ namespace ECommerce_Business.Concrete
                     new EntityResult<List<Product>>(null, ResultType.Error, "Database Hatası -> " + ex.Message);
             }
         }
+        public async Task<EntityResult<List<Product>>> GetNewProductsByCount(int count)
+        {
+            try
+            {
+                var products = await productDal.GetNewProductsByCount(count);
+                return new EntityResult<List<Product>>(products);
+            }
+            catch (Exception ex)
+            {
+                return new EntityResult<List<Product>>(null, ResultType.Error, "Database Hatası -> " + ex.Message);
+            }
+        }
 
-
+        public async Task<EntityResult<List<Product>>> GetListBySearch(string searchString, int categoryId = 0)
+        {
+            try
+            {
+                var products = await productDal.GetListBySearch(searchString, categoryId);
+                return new EntityResult<List<Product>>(products);
+            }
+            catch (Exception ex)
+            {
+                return new EntityResult<List<Product>>(null, ResultType.Error, "Database Hatası -> " + ex.Message);
+            }
+        }
     }
 }

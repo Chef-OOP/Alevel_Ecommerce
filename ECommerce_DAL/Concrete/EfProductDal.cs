@@ -112,7 +112,17 @@ namespace ECommerce_DAL.Concrete
             #endregion
         }
 
+        public async Task<List<Product>> GetListBySearch(string searchString, int categoryId = 0)
+        {
+            if (categoryId == 0)
+                return await context.Products.Where(x => x.Name.ToLower().Contains(searchString.ToLower())).ToListAsync();
+            return await context.Products.Where(x => x.Name.ToLower().Contains(searchString.ToLower()) && x.CategoryId==categoryId).ToListAsync();
+        }
 
+        public async Task<List<Product>> GetNewProductsByCount(int count)
+        {
+            return await context.Products.OrderByDescending(x=>x.Created).Take(count).ToListAsync();
+        }
 
 
     }

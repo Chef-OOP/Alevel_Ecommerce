@@ -24,7 +24,5 @@ namespace ECommerce_Api.DTOs
         public string Description { get; set; }
         public string Image { get; set; }
         public string Logo { get; set; }
-
-        public List<CategoryDto> Categories { get; set; }
     }
 }

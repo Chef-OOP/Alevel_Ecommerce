@@ -15,6 +15,7 @@ namespace ECommerce_Entity.Concrete.POCO
         public int Selling { get; set; }
         public bool IsAdviced { get; set; }
         public int Stock { get; set; }
+        public string MainImage { get; set; }
         public List<ProductImage> Images { get; set; }
         public List<ProductCampaign> ProductCampaign { get; set; }
         public List<ProductPropertyProduct> ProductPropertyProducts { get; set; }

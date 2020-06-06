@@ -67,7 +67,7 @@ namespace ECommerce_Business.Concrete
         {
             try
             {
-                var orderItems = await orderItemDal.GetAllAsync(filter);
+                var orderItems = await orderItemDal.GetAllAsync(filter,"Product");
                 if (orderItems.Count > 0)
                     return new EntityResult<List<OrderItem>>(orderItems, ResultType.Success);
                 return new EntityResult<List<OrderItem>>(orderItems, ResultType.Info, "Hiç içerik bulunamadı");

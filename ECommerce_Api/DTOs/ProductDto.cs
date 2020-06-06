@@ -9,13 +9,14 @@ namespace ECommerce_Api.DTOs
 {
     public class ProductDto
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Name Alanı Zorunlu")]
         [MaxLength(200, ErrorMessage = "Ürün Adı Max 200 karakter olmalıdır")]
         public string Name { get; set; }
         public string Description { get; set; }
         [Required(ErrorMessage = "RealPrice Alanı Zorunlu")]
         public decimal RealPrice { get; set; }
-
+        public string MainImage { get; set; }
         public decimal DiscountedPrice { get; set; }
         public decimal? Discount { get; set; }
         public decimal? Tax { get; set; }

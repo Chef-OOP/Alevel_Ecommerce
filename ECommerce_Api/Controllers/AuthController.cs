@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECommerce_Api.DTOs;
+using ECommerce_Api.DTOs.BasketDTOs;
 using ECommerce_Api.Filters;
 using ECommerce_Business.Abstarct;
 using ECommerce_Entity.Concrete.POCO;
@@ -14,12 +15,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce_Api.Controllers
 {
-    public class AddToBasketDto
-    {
-        public int id { get; set; }
-        public int CustomerId { get; set; } = 0;
-        public int count { get; set; } = 1;
-    }
+ 
 
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -164,17 +160,17 @@ namespace ECommerce_Api.Controllers
             {
                 customerData = (await customerService.GetById(addToBasket.CustomerId)).Data;
             }
-            var product = (await productService.GetById(addToBasket.id)).Data;
+            var product = (await productService.GetById(addToBasket.Id)).Data;
 
             var orderItems = (await orderItemService
                 .GetList(x => x.CustomerId == customerData.Id)).Data;
 
-            if (orderItems.Count > 0)
+                    if (orderItems.Count > 0)
             {
                 OrderItem or = orderItems.FirstOrDefault(x => x.ProductId == product.Id);
                 if (or != null)
                 {
-                    or.Quantity += addToBasket.count;
+                    or.Quantity += addToBasket.Count;
                     orderItemService.Update(or);
                 }
                 else
@@ -183,7 +179,7 @@ namespace ECommerce_Api.Controllers
                     {
                         ProductId = product.Id,
                         CustomerId = customerData.Id,
-                        Quantity = addToBasket.count
+                        Quantity = addToBasket.Count
                     };
                     orderItemService.Add(ori);
                 }
@@ -194,7 +190,7 @@ namespace ECommerce_Api.Controllers
                 {
                     ProductId = product.Id,
                     CustomerId = customerData.Id,
-                    Quantity = addToBasket.count
+                    Quantity = addToBasket.Count
                 };
                 orderItemService.Add(ori);
             }
@@ -204,6 +200,65 @@ namespace ECommerce_Api.Controllers
             return Ok(json);
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromBasket(AddToBasketDto addToBasket)
+        {
+            Customer customerData = null;
+            if (addToBasket.CustomerId == 0)
+            {
+                string key = Guid.NewGuid().ToString();
+                Customer customer = new Customer();
+                customer.Key = key;
+                await customerService.Add(customer);
+                customerData = (await customerService.Customer(key)).Data;
+            }
+            else
+            {
+                customerData = (await customerService.GetById(addToBasket.CustomerId)).Data;
+            }
+            var product = (await productService.GetById(addToBasket.Id)).Data;
+
+            var orderItems = (await orderItemService
+                .GetList(x => x.CustomerId == customerData.Id)).Data;
+
+            if (orderItems.Count > 0)
+            {
+                OrderItem or = orderItems.FirstOrDefault(x => x.ProductId == product.Id);
+                if (or != null)
+                {
+                    or.Quantity = addToBasket.Count;
+                    orderItemService.Update(or);
+                }
+                else
+                {
+                    OrderItem ori = new OrderItem()
+                    {
+                        ProductId = product.Id,
+                        CustomerId = customerData.Id,
+                        Quantity = addToBasket.Count
+                    };
+                    orderItemService.Delete(ori);
+                }
+            }
+            else
+            {
+                OrderItem ori = new OrderItem()
+                {
+                    ProductId = product.Id,
+                    CustomerId = customerData.Id,
+                    Quantity = addToBasket.Count
+                };
+                orderItemService.Delete(ori);
+            }
+            Dictionary<string, object> json = new Dictionary<string, object>();
+            json.Add("Success", true);
+            json.Add("customerid", customerData.Id);
+            return Ok(json);
+
+        }
+
+
 
 
         [ValidationFilter]

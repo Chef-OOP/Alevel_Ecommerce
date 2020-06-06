@@ -9,7 +9,9 @@ namespace ECommerce_Api.DTOs
 {
     public class ProductPropertyGroupDto
     {
+        public int Id { get; set; }
         [Required(ErrorMessage ="Property Group Alanı Zorunludur")]
         public string Name { get; set; }
+        public IEnumerable<ProductPropertyDto> Properties { get; set; }
     }
 }

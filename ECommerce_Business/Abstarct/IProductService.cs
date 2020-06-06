@@ -18,5 +18,7 @@ namespace ECommerce_Business.Abstarct
         EntityResult<List<Product>> GetListByListBrand(int[] brand, int[] productProperty);
         Task<EntityResult<List<Product>>> GetBestSellingsByCount(int count);
         Task<EntityResult<List<Product>>> GetAdvicedsByCount(int count);
+        Task<EntityResult<List<Product>>> GetNewProductsByCount(int count);
+        Task<EntityResult<List<Product>>> GetListBySearch(string searchString, int categoryId = 0);
     }
 }

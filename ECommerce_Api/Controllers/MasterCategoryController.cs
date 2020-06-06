@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECommerce_Api.DTOs;
+using ECommerce_Api.DTOs.MasterCategoryDTOs;
 using ECommerce_Api.ExtensionMethod;
 using ECommerce_Api.Filters;
 using ECommerce_Business.Abstarct;
@@ -18,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace ECommerce_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class MasterCategoryController : ControllerBase
     {
@@ -44,6 +45,22 @@ namespace ECommerce_Api.Controllers
             {
                 case ResultType.Success:
                     return Ok(mapper.Map<IEnumerable<MasterCategoryDto>>(result.Data));
+                case ResultType.Info:
+                    return BadRequest(result.Message);
+                case ResultType.Error:
+                    return BadRequest(result.Message);
+            }
+            return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMenuItems()
+        {
+            var result = await masterCategoryService.GetList();
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    return Ok(mapper.Map<IEnumerable<MasterCategoryMenuDto>>(result.Data));
                 case ResultType.Info:
                     return BadRequest(result.Message);
                 case ResultType.Error:

@@ -9,6 +9,7 @@ namespace ECommerce_Api.DTOs
 {
     public class ProductPropertyDto
     {
+        public int Id { get; set; }
         [Required(ErrorMessage ="Value Boş Geçilemez")]
         public string Value { get; set; }
         [Required(ErrorMessage ="Oluşturulacak özelliğin hangi gruba ait olduğunu belirmelisiniz!!!")]

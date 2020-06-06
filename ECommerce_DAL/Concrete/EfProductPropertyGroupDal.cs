@@ -27,10 +27,14 @@ namespace ECommerce_DAL.Concrete
                 .Select(x => x.ProductPropertyGroupId)
                 .ToArrayAsync();
 
-            return await (from p in context.ProductPropertyGroups
-                          from r in result
-                          where p.Id == r
-                          select p).ToListAsync();
+            var ppgroups = await context.ProductPropertyGroups.Include(x=>x.Properties).ToListAsync();
+
+            var groups = (from p in ppgroups
+                                from r in result
+                                where p.Id == r
+                                select p).ToList();
+
+            return groups;
 
         }
     }

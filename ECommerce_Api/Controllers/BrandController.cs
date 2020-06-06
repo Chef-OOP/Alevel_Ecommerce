@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class BrandController : ControllerBase
     {
@@ -35,7 +35,7 @@ namespace ECommerce_Api.Controllers
             switch (result.ResultType)
             {
                 case ResultType.Success:
-                    return Ok(mapper.Map<BrandDto>(result.Data));
+                    return Ok(mapper.Map<IEnumerable<BrandDto>>(result.Data));
                 case ResultType.Info:
                     return BadRequest(result.Message);
                 case ResultType.Error:

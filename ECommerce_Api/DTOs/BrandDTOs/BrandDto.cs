@@ -9,6 +9,7 @@ namespace ECommerce_Api.DTOs
 {
     public class BrandDto
     {
+        public int Id { get; set; }
         [Required(ErrorMessage ="Name alanı boş geçilemez")]
         public string Name { get; set; }
     }
