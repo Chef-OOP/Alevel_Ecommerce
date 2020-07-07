@@ -15,7 +15,7 @@ namespace ECommerce_DAL.Abstarct
         int Add(T entity);
         int Delete(T entity);
         int Update(T entity);
-        Task<T> GetAsync(Expression<Func<T, bool>> filter);
+        Task<T> GetAsync(Expression<Func<T, bool>> filter,params string[] includeList);
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>> filter = null,params string[] includeItems);
         //Task<IQueryable<T>> GetAll(Expression<Func<T, bool>> filter = null);
 

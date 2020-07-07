@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECommerce_Api.DTOs;
+using ECommerce_Api.DTOs.AccountDTOs;
 using ECommerce_Api.DTOs.BasketDTOs;
 using ECommerce_Api.DTOs.CategoryDTOs;
 using ECommerce_Api.DTOs.MasterCategoryDTOs;
@@ -35,7 +36,9 @@ namespace ECommerce_Api.Mapping
             CreateMap<ProductProperty, ProductPropertyDto>();
 
             CreateMap<ProductPropertyGroupDto, ProductPropertyGroup>();
-            CreateMap<ProductPropertyGroup, ProductPropertyGroupDto>();
+            CreateMap<ProductPropertyGroup, ProductPropertyGroupDto>(); 
+            CreateMap<ProductPropertyGroupNameDto, ProductPropertyGroup>();
+            CreateMap<ProductPropertyGroup, ProductPropertyGroupNameDto>();
 
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDto, Product>();
@@ -49,6 +52,9 @@ namespace ECommerce_Api.Mapping
 
             CreateMap<Address, AddressDto>();
             CreateMap<AddressDto, Address>();
+
+            CreateMap<Customer, CustomerDto>();
+            CreateMap<CustomerDto, Customer>();
         }
     }
 }

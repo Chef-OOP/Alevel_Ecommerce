@@ -36,9 +36,17 @@ namespace ECommerce_DAL.Concrete
             return Context.SaveChanges();
         }
 
-        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter)
+        public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> filter,params string[] includeList)
         {
-            return await Context.Set<TEntity>().SingleOrDefaultAsync(filter);
+            IQueryable<TEntity> query = Context.Set<TEntity>();
+            if (includeList!=null)
+            {
+                foreach (var item in includeList)
+                {
+                    query.Include(item);
+                }
+            }
+            return await query.FirstOrDefaultAsync(filter);
         }
         /// <summary>
         /// Tüm Sorgu methodları bu method üzerinde gidecek

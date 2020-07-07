@@ -4,6 +4,7 @@ using ECommerce_Entity.Concrete.POCO;
 using ECommerce_Entity.Constant;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +71,21 @@ namespace ECommerce_Business.Concrete
             try
             {
                 var properties = await propertyDal.GetAllAsync(filter);
+                if (properties.Count > 0)
+                    return new EntityResult<List<ProductProperty>>(properties, ResultType.Success);
+                return new EntityResult<List<ProductProperty>>(properties, ResultType.Info, "Hiç özellik bulunamadı");
+            }
+            catch (Exception ex)
+            {
+                return new EntityResult<List<ProductProperty>>(null, ResultType.Error, "Database hatası: " + ex.Message);
+            }
+        }
+
+        public async Task<EntityResult<List<ProductProperty>>> GetListByProductId(int productId)
+        {
+            try
+            {
+                var properties = await propertyDal.GetListByProductId(productId);
                 if (properties.Count > 0)
                     return new EntityResult<List<ProductProperty>>(properties, ResultType.Success);
                 return new EntityResult<List<ProductProperty>>(properties, ResultType.Info, "Hiç özellik bulunamadı");

@@ -89,7 +89,7 @@ namespace ECommerce_Business.Concrete
                     PasswordSalt = passwordSalt,
                     AllowSms = userForRegisterDto.AllowSms,
                     AllowEmail = userForRegisterDto.AllowEmail,
-                    TCKN = userForRegisterDto.TCKN?? null
+                    //TCKN = userForRegisterDto.TCKN?? null
 
                 };
                 userService.Add(user);

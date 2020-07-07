@@ -13,6 +13,7 @@ namespace ECommerce_Api.DTOs
         [Required(ErrorMessage ="Value Boş Geçilemez")]
         public string Value { get; set; }
         [Required(ErrorMessage ="Oluşturulacak özelliğin hangi gruba ait olduğunu belirmelisiniz!!!")]
+        public ProductPropertyGroupNameDto Group { get; set; }
         public int GroupId { get; set; }
     }
 }

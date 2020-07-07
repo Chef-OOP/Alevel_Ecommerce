@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ECommerce_Api.DTOs;
+using ECommerce_Api.DTOs.AccountDTOs;
 using ECommerce_Api.DTOs.BasketDTOs;
 using ECommerce_Api.Filters;
 using ECommerce_Business.Abstarct;
@@ -8,6 +9,7 @@ using ECommerce_Entity.Constant;
 using ECommerce_Entity.DTOs;
 using ECommerce_JWT.Security;
 using Microsoft.AspNetCore.Mvc;
+using MoreLinq.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -259,6 +261,68 @@ namespace ECommerce_Api.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<IActionResult> NewRegister(UserForRegisterDto userDto) 
+        {
+            Dictionary<string, object> registerResult = new Dictionary<string, object>();
+            #region User Add
+            var result = authService.Register(userDto);
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    break;
+                default:
+                    return BadRequest(result.Message);
+            } 
+            #endregion
+
+            #region Customer Add or Update
+            Customer customer = userDto.CustomerId == 0 ? new Customer
+            {
+                Key = Guid.NewGuid().ToString(),
+
+            } : (await customerService.GetById(userDto.CustomerId)).Data;
+            customer.AppUserId = result.Data.Id;
+            customer.Email = result.Data.Email;
+            customer.FirstName = result.Data.FirstName;
+            customer.LastName = result.Data.LastName;
+            customer.CellPhone = result.Data.CellPhone;
+
+            EntityResult customerOperationResult = null;
+
+            if (userDto.CustomerId == 0)
+                customerOperationResult = await customerService.Add(customer);
+            else
+                customerOperationResult = await customerService.Update(customer); 
+            #endregion
+
+            switch (customerOperationResult.ResultType)
+            {
+                case ResultType.Success:
+                    registerResult.Add("status", true);
+                    registerResult.Add("customerId", customer.Id);
+                    registerResult.Add("message", "success");
+                    return Ok(registerResult);
+                default:
+                    registerResult.Add("status", false);
+                    registerResult.Add("customerId", null);
+                    registerResult.Add("message", customerOperationResult.Message);
+                    return BadRequest(registerResult);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCustomerById(int customerId)
+        {
+            var result = await customerService.GetById(customerId);
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    return Ok(mapper.Map<CustomerDto>(result.Data));
+                default:
+                    return BadRequest(result.Message);
+            }
+        }
 
 
         [ValidationFilter]

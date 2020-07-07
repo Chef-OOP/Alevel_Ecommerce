@@ -14,7 +14,7 @@ using MoreLinq.Extensions;
 
 namespace ECommerce_Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ProductPropertyController : ControllerBase
     {
@@ -113,7 +113,7 @@ namespace ECommerce_Api.Controllers
                     return BadRequest(result.Message);
             }
         }
-        
+
         public async Task<IActionResult> GetGroup(ProductPropertyGroup group)
         {
             var result =
@@ -135,5 +135,19 @@ namespace ECommerce_Api.Controllers
             }
 
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetListByProductId(int productId)
+        {
+            var result = await productPropertyService.GetListByProductId(productId);
+            switch (result.ResultType)
+            {
+                case ResultType.Success:
+                    return Ok(mapper.Map<List<ProductPropertyDto>>(result.Data));
+                default:
+                    return BadRequest(result.Message);
+            }
+        }
+
     }
 }

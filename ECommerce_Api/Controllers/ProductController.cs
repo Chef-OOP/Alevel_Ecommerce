@@ -52,8 +52,8 @@ namespace ECommerce_Api.Controllers
             return Content("null");
         }//Listeler
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet]
+        public async Task<IActionResult> GetById(int id)
         {
             var result =
                  await productService.GetById(id);
